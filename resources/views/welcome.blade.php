@@ -12,6 +12,7 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     />
     <style>
+      
       * {
   margin: 0;
   padding: 0;
@@ -139,28 +140,59 @@
 
 .card {
   background: white;
-  box-shadow: 0 0 24px rgba(153, 109, 255, 0.763);
+  box-shadow: 0 0 24px rgba(153, 109, 255, 0.2);
   border-radius: 25px;
   margin: 30px auto;
-  padding: 20px 25px;
+  padding: 20px 10px;
   transition: 0.5s;
-  max-width: 90%;
+}
+
+.low-card {
+  gap: none;
 }
 
 .activity-card {
   background: #926ad24c;
-  width: 1500px;
-  max-width: 90%;
-  margin: 30px auto;
-  padding: 20px 25px;
+  margin: 0 auto;
+  width: 1000px;
+  max-height: 90%;
+  padding: 0 15px;
   border-radius: 25px;
   box-shadow: 0 0 25px rgba(154, 109, 255, 0.2);
   text-align: left;
   transition: 0.5s;
+  scale: 0.9;
+}
+.activity-card:hover {
+  scale: 1;
 }
 
 .activity-card .card-header {
   background: transparent;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 5px;
+  height: 50px;
+  margin-top: 10px;
+}
+
+.activity-card .card-body {
+  margin-left: 10px;
+  height: 75px;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  justify-content: left;
+  align-items: center;
+}
+
+.activity-card p {
+  margin-top: 20px;
+}
+
+.activity-card .card-body p {
+  margin-top: 13px;
 }
 
 .activity-card .text-bottom {
@@ -172,7 +204,7 @@
 }
 
 .info {
-  width: 80%;
+  max-width: 90%;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -180,10 +212,6 @@
   margin: 0 auto;
 }
 
-.activity-card {
-  max-width: 80%;
-  height: auto;
-}
     </style>
   </head>
   <body>
@@ -198,7 +226,7 @@
         <p id="dateText">Day, 00 Month Years</p>
       </div>
 
-      <div class="container d-flex">
+      <div class="container d-flex justify-content-between low-card">
         <div class="info-cards">
           <span class="fw-bold"
             ><i class="fa-solid fa-alarm-clock"></i>Current time!</span
@@ -228,31 +256,31 @@
       <div class="card">
         <div class="activity-card">
           <div class="card-header d-flex justify-content-between">
-            <h3 class="fw-bold">1st Ring</h3>
+            <p class="fw-bold">1st Ring</p>
             <span class="badge rounded-pill text-bg-success text-bottom "
               >Completed</span
             >
           </div>
           <div class="card-body">
-            <h4 class="gradient-color fw-bold ">MPP</h4>
+            <h3 class="gradient-color fw-bold ">MPP</h3>
             <p id="dateText" class="fw-bold">07:00-08:00</p>
           </div>
         </div>
         <div class="activity-card">
           <div class="card-header d-flex justify-content-between">
-            <h3 class="fw-bold">2nd Ring</h3>
+            <p class="fw-bold">2nd Ring</p>
             <span class="badge rounded-pill text-bg-success text-bottom"
               >Completed</span
             >
           </div>
           <div class="card-body">
-            <h4 class="gradient-color fw-bold">Databases</h4>
+            <h3 class="gradient-color fw-bold">Databases</h3>
             <p id="dateText" class="fw-bold">07:00-08:00</p>
           </div>
         </div>
         <div class="activity-card">
           <div class="card-header d-flex justify-content-between">
-            <h3 class="fw-bold">3rd Ring</h3>
+            <p class="fw-bold">3rd Ring</p>
             <span class="badge rounded-pill text-bg-success text-bottom"
               >Completed</span
             >
@@ -264,7 +292,7 @@
         </div>
         <div class="activity-card">
           <div class="card-header d-flex justify-content-between">
-            <h3 class="fw-bold">4th Ring</h3>
+            <p class="fw-bold">4th Ring</p>
             <span class="badge rounded-pill text-bg-warning text-bottom"
               >Active</span
             >
@@ -276,7 +304,7 @@
         </div>
         <div class="activity-card">
           <div class="card-header d-flex justify-content-between">
-            <h3 class="fw-bold">1st Ring</h3>
+            <p class="fw-bold">1st Ring</p>
             <span class="badge rounded-pill text-bg-success text-bottom"
               >Completed</span
             >
@@ -288,7 +316,7 @@
         </div>
         <div class="activity-card">
           <div class="card-header d-flex justify-content-between">
-            <h3 class="fw-bold">1st Ring</h3>
+            <p class="fw-bold">1st Ring</p>
             <span class="badge rounded-pill text-bg-success text-bottom"
               >Completed</span
             >
@@ -301,8 +329,8 @@
       </div>
     </section>
 
-    <section>
-      .
+    <section class="add">
+      <h1></h1>
     </section>
 
     <script src="assets/bootstrap-5.3.7-dist/js/bootstrap.min.js"></script>
