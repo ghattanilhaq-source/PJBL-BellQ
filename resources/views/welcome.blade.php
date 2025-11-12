@@ -212,73 +212,73 @@
       <div class="card">
         <div class="activity-card">
           <div class="card-header d-flex justify-content-between">
-            <h2 class="fw-bold">1st Ring</h2>
-            <span class="badge rounded-pill text-bg-success text-bottom"
+            <h3 class="fw-bold">1st Ring</h3>
+            <span class="badge rounded-pill text-bg-success text-bottom "
               >Completed</span
             >
           </div>
           <div class="card-body">
-            <h2 class="gradient-color fw-bold">MPP</h2>
+            <h4 class="gradient-color fw-bold ">MPP</h4>
             <p id="dateText" class="fw-bold">07:00-08:00</p>
           </div>
         </div>
         <div class="activity-card">
           <div class="card-header d-flex justify-content-between">
-            <h2 class="fw-bold">2nd Ring</h2>
+            <h3 class="fw-bold">2nd Ring</h3>
             <span class="badge rounded-pill text-bg-success text-bottom"
               >Completed</span
             >
           </div>
           <div class="card-body">
-            <h2 class="gradient-color fw-bold">Databases</h2>
+            <h4 class="gradient-color fw-bold">Databases</h4>
             <p id="dateText" class="fw-bold">07:00-08:00</p>
           </div>
         </div>
         <div class="activity-card">
           <div class="card-header d-flex justify-content-between">
-            <h2 class="fw-bold">3rd Ring</h2>
+            <h3 class="fw-bold">3rd Ring</h3>
             <span class="badge rounded-pill text-bg-success text-bottom"
               >Completed</span
             >
           </div>
           <div class="card-body">
-            <h2 class="gradient-color fw-bold">First Rest</h2>
+            <h4 class="gradient-color fw-bold">First Rest</h4>
             <p id="dateText" class="fw-bold">07:00-08:00</p>
           </div>
         </div>
         <div class="activity-card">
           <div class="card-header d-flex justify-content-between">
-            <h2 class="fw-bold">4th Ring</h2>
+            <h3 class="fw-bold">4th Ring</h3>
             <span class="badge rounded-pill text-bg-warning text-bottom"
               >Active</span
             >
           </div>
           <div class="card-body">
-            <h2 class="gradient-color fw-bold">Bahasa Indonesia</h2>
+            <h4 class="gradient-color fw-bold">Bahasa Indonesia</h4>
             <p id="dateText" class="fw-bold">07:00-08:00</p>
           </div>
         </div>
         <div class="activity-card">
           <div class="card-header d-flex justify-content-between">
-            <h2 class="fw-bold">1st Ring</h2>
+            <h3 class="fw-bold">1st Ring</h3>
             <span class="badge rounded-pill text-bg-success text-bottom"
               >Completed</span
             >
           </div>
           <div class="card-body">
-            <h2 class="gradient-color fw-bold">MPP</h2>
+            <h4 class="gradient-color fw-bold">MPP</h4>
             <p id="dateText" class="fw-bold">07:00-08:00</p>
           </div>
         </div>
         <div class="activity-card">
           <div class="card-header d-flex justify-content-between">
-            <h2 class="fw-bold">1st Ring</h2>
+            <h3 class="fw-bold">1st Ring</h3>
             <span class="badge rounded-pill text-bg-success text-bottom"
               >Completed</span
             >
           </div>
           <div class="card-body">
-            <h2 class="gradient-color fw-bold">MPP</h2>
+            <h4 class="gradient-color fw-bold">MPP</h4>
             <p id="dateText" class="fw-bold">07:00-08:00</p>
           </div>
         </div>
