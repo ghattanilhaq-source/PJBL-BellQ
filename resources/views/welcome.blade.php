@@ -206,7 +206,7 @@
           <span class="badge rounded-pill status-active text-bg-success"
             >Active</span
           >
-          <h3 id="currentSubject">Bahasa Indonesia</h3>
+          <h3 id="currentSubject" class="fw-bold">Bahasa Indonesia</h3>
           <p id="currentSchedule">10:40 - 12:00</p>
         </div>
         <div class="next-cards">
