@@ -212,6 +212,48 @@
   margin: 0 auto;
 }
 
+.add-ring {
+  margin-top:80px;
+}
+
+.add-text {
+  text-align: center;
+  font-size: 36px;
+  font-weight: 700;
+  color: #8b4dff;
+  margin-bottom: 20px;
+}
+
+.add-card {
+  background: white;
+  box-shadow: 0 4px 15px rgba(139, 77, 255, 0.15);
+  border-radius: 20px;
+  width: 80%;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 30px; 
+  color: #8b4dff;
+}
+
+.subject-form {
+  flex: 1;
+  min-width: 200px;
+}
+
+.input-subject {
+  border: none;
+  border-bottom: 2px solid #d5c5ff;
+  width: 100%;
+  padding: 5px;
+  outline: none;
+  color: #6b4cff;
+}
+
+.sound-form {
+  flex: 1;
+  min-width: 200px;
+}
+
     </style>
   </head>
   <body>
@@ -234,7 +276,7 @@
           <span class="badge rounded-pill status-active text-bg-success"
             >Active</span
           >
-          <h3 id="currentSubject" class="fw-bold">Bahasa Indonesia</h3>
+          <h3 id="currentSubject">Bahasa Indonesia</h3>
           <p id="currentSchedule">10:40 - 12:00</p>
         </div>
         <div class="next-cards">
@@ -329,8 +371,125 @@
       </div>
     </section>
 
-    <section class="add">
-      <h1></h1>
+    <section class="add-ring">
+      <div class="add-text gradient-color">
+        <i class="fa-solid fa-bullhorn me-2"></i> Add rings!
+      </div>
+
+      <div class="add-card">
+        <div
+          style="
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 20px;
+          "
+        >
+          <div class="subject-form">
+            <label style="font-weight: 600;">Subject</label><br />
+            <input
+              type="text"
+              placeholder="example"
+              class="input-subject"/>
+          </div>
+          <div class="sound-form">
+            <label style="font-weight: 600;">Sound</label><br />
+            <input
+              type="file"
+              style="
+                border: none;
+                border-bottom: 2px solid #d5c5ff;
+                width: 100%;
+                padding: 5px;
+                color: #6b4cff;
+              "
+            />
+          </div>
+          <div style="flex: 1; min-width: 200px;">
+            <label style="font-weight: 600;">Period</label><br />
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <input
+                type="time"
+                style="
+                  border: none;
+                  border-bottom: 2px solid #d5c5ff;
+                  padding: 5px;
+                  outline: none;
+                  color: #6b4cff;
+                "
+              />
+              <span>to</span>
+              <input
+                type="time"
+                style="
+                  border: none;
+                  border-bottom: 2px solid #d5c5ff;
+                  padding: 5px;
+                  outline: none;
+                  color: #6b4cff;
+                "
+              />
+            </div>
+          </div>
+        </div>
+
+        <hr style="border: none; border-top: 1px solid #eee; margin: 25px 0;" />
+
+        <h3 style="text-align: center; color: #8b4dff; font-weight: 600;">
+          Preview
+        </h3>
+
+        <div
+          style="
+            background-color: #f3ecff;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+          "
+        >
+          <h4
+            style="
+              display: flex;
+              justify-content: space-between;
+              margin: 0;
+              color: #6b4cff;
+            "
+          >
+            .. Ring! <span style="background: #ede3ff; padding: 4px 10px; border-radius: 15px; font-size: 12px;">Upcoming</span>
+          </h4>
+          <div style="margin-top: 15px; font-weight: 600;">Ring name</div>
+          <div style="font-size: 14px; color: #a393e6;">Period</div>
+        </div>
+
+        <button
+        style="
+            display: block;
+            margin: 0 auto;
+            background-color: #8b4dff;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            padding: 10px 30px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: 0.3s;
+            "
+          class="btn gradient-color"
+          >
+          Add to schedule
+        </button>
+      </div>
+
+      <p
+        style="
+          text-align: center;
+          color: #8b4dff;
+          font-size: 13px;
+          margin-top: 30px;
+        "
+      >
+        created by: <b>XI PPLG</b>
+      </p>
     </section>
 
     <script src="assets/bootstrap-5.3.7-dist/js/bootstrap.min.js"></script>
