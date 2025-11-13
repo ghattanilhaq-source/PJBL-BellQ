@@ -288,6 +288,37 @@
   color: #6b4cff;
 }
 
+.periodInput {
+  flex: 1;
+  min-width: 200px;
+  position: relative;
+  width: fit-content;
+}
+
+.periodInput .inputLabel {
+  /* Membuat unit "S" bisa diposisikan di dalam wrapper */
+    position: absolute; 
+    /* Posisikan unit "S" di kanan dalam wrapper */
+    right: 135px; 
+    /* Posisikan unit di tengah secara vertikal */
+    /* opacity: 0; */
+    top: 70%; 
+    transform: translateY(-50%);
+    display: inline-flex;
+    /* Sesuaikan gaya font dan warna */
+    color: #999; /* Warna abu-abu agar terlihat sebagai label tambahan */
+    font-size: 0.9em;
+    pointer-events: none; /* Penting! Agar user masih bisa klik input, bukan span */
+    z-index: 2; /* Pastikan unit "S" di atas input jika diperlukan */
+}
+
+.periodInput .durationInput {
+  /* Beri sedikit padding di kanan agar angka tidak tertutup unit "S" */
+    padding-right: 25px; 
+    /* Pastikan input berada di atas unit */
+    z-index: 1;
+}
+
 
     </style>
   </head>
@@ -406,7 +437,7 @@
       </div>
     </section>
 
-    <form action="/" method="#" >
+   <form action="/" method="#" >
       @csrf
     <section class="add-ring">
       <div class="add-text gradient-color">
@@ -432,31 +463,35 @@
               
           </div>
           <div class="sound-form">
-  <label for="soundInput" style="font-weight: 600; color: #6b4cff;">Sound</label><br />
-  <label for="soundInput" class="custom-file-upload">Choose MP3</label>
-  <span id="file-name">No file chosen</span>
-  <input
-    type="file"
-    id="soundInput"
-    accept=".mp3,audio/mpeg"
-    style="display: none;"
-  />
+    <label for="soundInput" style="font-weight: 600; color: #6b4cff;">Sound</label><br />
+    <label for="soundInput" class="custom-file-upload">Choose MP3</label>
+    <span id="file-name">No file chosen</span>
+    <input
+      type="file"
+      id="soundInput"
+      accept=".mp3,audio/mpeg"
+      style="display: none;"
+    />
 </div>
 
-          <div style="flex: 1; min-width: 200px;">
-            <label style="font-weight: 600;">Period</label><br />
+          <div class="periodInput">
+            <label style="font-weight: 600;">Period(Time & Long)</label><br />
             <div style="display: flex; align-items: center; gap: 10px;">
               <input
                 type="time"
                 class="timeInput"
                 id="startTime"
               />
-              <span>to</span>
-              <input
-                type="time"
-                class="timeInput"
-                id="endTime"
-              />
+              <div style="display: flex; align-items: center; gap: 10px;">
+                <input
+                type="number"
+                min="1"
+                max="60"
+                value="5"
+                class="timeInput durationInput"
+                id="durationInput" />
+                <span class="inputLabel">S</span>
+              </div>
             </div>
           </div>
         </div>
@@ -485,8 +520,8 @@
           >
             .. Ring! <span style="background: #ede3ff; padding: 4px 10px; border-radius: 15px; font-size: 12px;">Upcoming</span>
           </h4>
-          <div style="margin-top: 15px; font-weight: 600;">Ring name</div>
-          <div style="font-size: 14px; color: #a393e6;">Period</div>
+          <div style="margin-top: 15px; font-weight: 600;" id="ringNamePreview">Ring name</div>
+          <div style="font-size: 14px; color: #a393e6;" id="periodPreview">Period</div> 
         </div>
 
         <button
@@ -520,6 +555,7 @@
       </p>
     </section>
     </form>
+    </form>
 
 
     <script src="assets/bootstrap-5.3.7-dist/js/bootstrap.min.js"></script>
@@ -534,23 +570,8 @@
     });
   });
 
-    function updateClock() {
-  const now = new Date();
-  document.getElementById('mainTime').innerText = now.toLocaleTimeString();
-
-  const options = {
-    weekday: 'long',
-    month: 'long',
-    day: 'numeric',
-    year: 'numeric',
-  };
-  document.getElementById('dateText').innerText = now.toLocaleDateString(
-    'en-US',
-    options
-  );
-}
-setInterval(updateClock, 1000);
-updateClock();
+  setInterval(updateClock, 1000);
+  updateClock();
 
   const soundInput = document.getElementById('soundInput');
   soundInput.addEventListener('change', function() {
@@ -561,34 +582,53 @@ updateClock();
     }
   });
 
-  const subjectInput = document.getElementById("subjectInput");
-      const startTime = document.getElementById("startTime");
-      const endTime = document.getElementById("endTime");
-      
-       subjectInput.addEventListener("input", () => {
-      previewSubject.textContent = subjectInput.value || "-";
-    });
+  // 1. Ambil elemen input berdasarkan ID yang sudah ditetapkan/diperbaiki
+    const subjectInput = document.getElementById('subjectInput');
+    const startTimeInput = document.getElementById('startTime');
+    const durationInput = document.getElementById('durationInput'); // Mengambil ID yang baru
+    
+    // 2. Ambil elemen preview berdasarkan ID yang baru ditambahkan
+    const ringNamePreview = document.getElementById('ringNamePreview');
+    const periodPreview = document.getElementById('periodPreview');
+    
+    // 3. Fungsi untuk mengupdate semua elemen preview
+    function updatePreview() {
+        // Ambil nilai dari input. Jika kosong, gunakan teks default.
+        const subject = subjectInput.value.trim() || 'Ring name'; 
+        const startTime = startTimeInput.value.trim() || '--:--';
+        const duration = durationInput.value.trim() || '5';
 
-    soundInput.addEventListener("change", () => {
-      const file = soundInput.files[0];
-      if (file) {
-        fileName.textContent = file.name;
-        previewSound.textContent = file.name;
-      } else {
-        fileName.textContent = "No file chosen";
-        previewSound.textContent = "No file";
-      }
-    });
+        // Update Ring Name Preview
+        ringNamePreview.textContent = subject;
 
-    const updatePeriod = () => {
-      const start = startTime.value || "--:--";
-      const end = endTime.value || "--:--";
-      previewPeriod.textContent = `${start} to ${end}`;
-    };
+        // Update Period Preview (menggabungkan waktu dan durasi)
+        periodPreview.textContent = `${startTime} (${duration} seconds)`; 
+    }
+    
+    // 4. Daftarkan event listener untuk memicu update setiap kali input berubah
+    subjectInput.addEventListener('input', updatePreview);
+    startTimeInput.addEventListener('input', updatePreview);
+    durationInput.addEventListener('input', updatePreview);
 
-    startTime.addEventListener("input", updatePeriod);
-    endTime.addEventListener("input", updatePeriod); 
-
+    // 5. Panggil sekali saat halaman dimuat (untuk menampilkan nilai default/awal)
+    document.addEventListener('DOMContentLoaded', updatePreview);
+    
+    
+    function updateClock() {
+  const now = new Date();
+  document.getElementById('mainTime').innerText = now.toLocaleTimeString();
+  
+  const options = {
+    weekday: 'long',
+    month: 'long',
+    day: 'numeric',
+    year: 'numeric',
+  };
+  document.getElementById('dateText').innerText = now.toLocaleDateString(
+    'en-US',
+    options
+  );
+  }
 </script>
   </body>
 </html>
