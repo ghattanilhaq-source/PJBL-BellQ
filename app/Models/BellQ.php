@@ -9,10 +9,12 @@ class BellQ extends Model
 {
     use HasFactory;
 
-    protected $table = 'bells';
+    protected $table = 'bell_qs';
     protected $fillable = [
-        'subject',
-        'sound',
-        'period',
-    ];
+    'subject',
+    'sound',
+    'start_time',
+    'end_time',
+];
+
 }
