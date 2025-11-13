@@ -254,6 +254,41 @@
   min-width: 200px;
 }
 
+.soundInput {
+  border: none;
+  border-bottom: 2px solid #d5c5ff;
+  width: 100%;
+  padding: 5px;
+  color: #6b4cff;
+}
+
+.custom-file-upload {
+  background-color: #6b4cff;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.3s;
+}
+.custom-file-upload:hover {
+  background-color: #5938ff;
+}
+#file-name {
+  margin-left: 10px;
+  color: #6b4cff;
+  font-size: 14px;
+}
+
+.timeInput {
+  border: none;
+  border-bottom: 2px solid #d5c5ff;
+  padding: 5px;
+  outline: none;
+  color: #6b4cff;
+}
+
+
     </style>
   </head>
   <body>
@@ -371,6 +406,8 @@
       </div>
     </section>
 
+    <form action="/" method="#" >
+      @csrf
     <section class="add-ring">
       <div class="add-text gradient-color">
         <i class="fa-solid fa-bullhorn me-2"></i> Add rings!
@@ -390,44 +427,35 @@
             <input
               type="text"
               placeholder="example"
-              class="input-subject"/>
+              class="input-subject"
+              id="subjectInput"/>
+              
           </div>
           <div class="sound-form">
-            <label style="font-weight: 600;">Sound</label><br />
-            <input
-              type="file"
-              style="
-                border: none;
-                border-bottom: 2px solid #d5c5ff;
-                width: 100%;
-                padding: 5px;
-                color: #6b4cff;
-              "
-            />
-          </div>
+  <label for="soundInput" style="font-weight: 600; color: #6b4cff;">Sound</label><br />
+  <label for="soundInput" class="custom-file-upload">Choose MP3</label>
+  <span id="file-name">No file chosen</span>
+  <input
+    type="file"
+    id="soundInput"
+    accept=".mp3,audio/mpeg"
+    style="display: none;"
+  />
+</div>
+
           <div style="flex: 1; min-width: 200px;">
             <label style="font-weight: 600;">Period</label><br />
             <div style="display: flex; align-items: center; gap: 10px;">
               <input
                 type="time"
-                style="
-                  border: none;
-                  border-bottom: 2px solid #d5c5ff;
-                  padding: 5px;
-                  outline: none;
-                  color: #6b4cff;
-                "
+                class="timeInput"
+                id="startTime"
               />
               <span>to</span>
               <input
                 type="time"
-                style="
-                  border: none;
-                  border-bottom: 2px solid #d5c5ff;
-                  padding: 5px;
-                  outline: none;
-                  color: #6b4cff;
-                "
+                class="timeInput"
+                id="endTime"
               />
             </div>
           </div>
@@ -491,10 +519,21 @@
         created by: <b>XI PPLG</b>
       </p>
     </section>
+    </form>
+
 
     <script src="assets/bootstrap-5.3.7-dist/js/bootstrap.min.js"></script>
     <script src="script.js"></script>
     <script>
+
+  const timeInputs = document.querySelectorAll('.timeInput');
+
+  timeInputs.forEach(input => {
+    input.addEventListener('click', function () {
+      this.showPicker();
+    });
+  });
+
     function updateClock() {
   const now = new Date();
   document.getElementById('mainTime').innerText = now.toLocaleTimeString();
@@ -512,6 +551,44 @@
 }
 setInterval(updateClock, 1000);
 updateClock();
+
+  const soundInput = document.getElementById('soundInput');
+  soundInput.addEventListener('change', function() {
+    const file = this.files[0];
+    if (file && file.type !== 'audio/mpeg') {
+      alert('Hanya file MP3 yang diperbolehkan!');
+      this.value = ''; // reset input
+    }
+  });
+
+  const subjectInput = document.getElementById("subjectInput");
+      const startTime = document.getElementById("startTime");
+      const endTime = document.getElementById("endTime");
+      
+       subjectInput.addEventListener("input", () => {
+      previewSubject.textContent = subjectInput.value || "-";
+    });
+
+    soundInput.addEventListener("change", () => {
+      const file = soundInput.files[0];
+      if (file) {
+        fileName.textContent = file.name;
+        previewSound.textContent = file.name;
+      } else {
+        fileName.textContent = "No file chosen";
+        previewSound.textContent = "No file";
+      }
+    });
+
+    const updatePeriod = () => {
+      const start = startTime.value || "--:--";
+      const end = endTime.value || "--:--";
+      previewPeriod.textContent = `${start} to ${end}`;
+    };
+
+    startTime.addEventListener("input", updatePeriod);
+    endTime.addEventListener("input", updatePeriod); 
+
 </script>
   </body>
 </html>
