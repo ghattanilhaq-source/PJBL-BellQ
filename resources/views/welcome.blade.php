@@ -441,11 +441,7 @@
       </div>
     </section>
 
-<<<<<<< HEAD
-     <form action="/api/bells" method="post" enctype="multipart/form-data">
-=======
    <form action="/" method="#" >
->>>>>>> fafa3384bc7fe41898b49c564031a7f50c4c7aaa
       @csrf
     <section class="add-ring">
       <div class="add-text gradient-color">
@@ -494,16 +490,6 @@
                 name="start_time"
                 required
               />
-<<<<<<< HEAD
-              <span>to</span>
-              <input
-                type="time"
-                class="timeInput"
-                id="endTime"
-                name="end_time"
-                required
-              />
-=======
               <div style="display: flex; align-items: center; gap: 10px;">
                 <input
                 type="number"
@@ -514,7 +500,6 @@
                 id="durationInput" />
                 <span class="inputLabel">S</span>
               </div>
->>>>>>> fafa3384bc7fe41898b49c564031a7f50c4c7aaa
             </div>
           </div>
         </div>
