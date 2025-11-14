@@ -2,875 +2,766 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>BelQ website</title>
-    <link rel="stylesheet" href="style.css" />
-     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
 
+    <!-- Bootstrap CSS -->
     <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
       rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      crossorigin="anonymous"
     />
+
+    <!-- FontAwesome -->
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      rel="stylesheet"
+    />
+
     <style>
-      
+      /* Reset & Font */
       * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: 'Poppins', sans-serif;
-}
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Poppins", sans-serif;
+      }
 
-.header {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  margin: 0;
-}
+      body {
+        background-color: #F9F8FF;
+        padding: 30px 15px;
+      }
 
-.header .logo {
-  font-size: 42px;
-  font-weight: 600;
-  margin-top: 50px;
-}
+      /* Header */
+      .header {
+        text-align: center;
+        margin-bottom: 25px;
+      }
+      .logo {
+        font-size: 36px;
+        font-weight: 600;
+        background: linear-gradient(90deg, #5f45ff, #a06aff);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .subtitle {
+        color: #b2a6f0;
+        font-weight: 500;
+        font-size: 14px;
+        margin-top: 4px;
+      }
 
-.subtitle {
-  color: #796cbc;
-  font-size: 14px;
-  margin-top: -3px;
-}
+      /* Section Titles */
+      .section-title {
+        font-weight: 600;
+        font-size: 20px;
+        color: #5f45ff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        margin-bottom: 15px;
+      }
 
-.gradient-color {
-  font-weight: 700;
-  background: linear-gradient(90deg, #5f45ff, #a06aff);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
+      /* Card container fixes */
+      #activitiesContainer {
+        background: #e0d7ff;
+        border-radius: 15px;
+        padding: 20px;
+        max-width: 520px;
+        margin: 0 auto 40px auto;
+        box-shadow: 0 3px 8px rgba(116, 85, 255, 0.3);
+      }
 
-.main-time-card {
-  background: white;
-  width: 520px;
-  max-width: 90%;
-  margin: 30px auto;
-  padding: 35px 15px;
-  border-radius: 25px;
-  box-shadow: 0 0 25px rgba(154, 109, 255, 0.2);
-  text-align: center;
-  transition: 0.5s;
-}
+      /* Each activity card */
+      .activity-card {
+        background: white;
+        border-radius: 12px;
+        padding: 12px 18px;
+        margin-bottom: 12px;
+        box-shadow: 0 4px 8px rgb(152 113 255 / 0.25);
+        transition: background 0.3s ease, scale 0.3s ease-in-out;
+      }
+      .activity-card:hover {
+        background: #d8cfff;
+        scale: 1.05;
+      }
 
-.main-time-card:hover {
-  scale: 1.1;
-}
+      .activity-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-weight: 600;
+        font-size: 14px;
+        color: #4a3da7;
+      }
 
-.main-time-card h1 {
-  font-size: 54px;
-  font-weight: 600;
-  color: #9a6dff;
-}
+      .activity-subject {
+        color: #6633ff;
+        font-weight: 700;
+        font-size: 17px;
+        margin-top: 4px;
+        margin-bottom: 2px;
+      }
 
-.main-time-card p {
-  margin-top: 8px;
-  font-size: 14px;
-  color: #a79dd8;
-}
+      .activity-time {
+        font-size: 13px;
+        color: #7a60ff;
+        font-weight: 600;
+      }
 
-.info-cards {
-  background: white;
-  width: 450px;
-  max-width: 90%;
-  margin: 30px auto;
-  padding: 20px 25px;
-  border-radius: 25px;
-  box-shadow: 0 0 25px rgba(154, 109, 255, 0.2);
-  text-align: left;
-  justify-content: space-between;
-  transition: 0.5s;
-}
+      /* Badge styles */
+      .badge-completed {
+        background-color: #6fcf97;
+        color: white;
+        font-weight: 600;
+        font-size: 12px;
+        border-radius: 10px;
+        padding: 4px 10px;
+        text-transform: capitalize;
+      }
+      .badge-active {
+        background-color: #f2b950;
+        color: white;
+        font-weight: 600;
+        font-size: 12px;
+        border-radius: 10px;
+        padding: 4px 10px;
+      }
+      .badge-upcoming {
+        background-color: #a88eff;
+        color: white;
+        font-weight: 600;
+        font-size: 12px;
+        border-radius: 10px;
+        padding: 4px 10px;
+      }
 
-.info-cards:hover {
-  scale: 1.1;
-}
-
-.info-cards h3 {
-  color: #9a6dff;
-}
-
-.info-cards p {
-  font-weight: bold;
-  color: grey;
-}
-
-.next-cards {
-  background: white;
-  width: 450px;
-  max-width: 90%;
-  margin: 30px auto;
-  padding: 20px 25px;
-  border-radius: 25px;
-  box-shadow: 0 0 25px rgba(154, 109, 255, 0.2);
-  text-align: left;
-  transition: 0.5s;
-}
-
-.next-cards:hover {
-  scale: 1.1;
-}
-
-.next-cards h1 {
-  color: #9a6dff;
-  font-weight: bold;
-}
-.next-cards P {
-  color: #9a6dff;
-  font-weight: bold;
-  text-align: center;
-  margin-top: 20px;
-}
-
-.next-cards .nextBell {
-  font-size: 50px;
-}
-
-.text {
-  font-size: 35px;
-  font-weight: 600;
-  color: #9a6dff;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 50px;
-}
-
-.card {
-  background: white;
-  box-shadow: 0 0 24px rgba(153, 109, 255, 0.2);
-  border-radius: 25px;
-  margin: 30px auto;
-  padding: 20px 10px;
-  transition: 0.5s;
-}
-
-.low-card {
-  gap: none;
-}
-
-.activity-card {
-  background: #926ad24c;
-  margin: 0 auto;
-  width: 1000px;
-  max-height: 90%;
-  padding: 0 15px;
-  border-radius: 25px;
-  box-shadow: 0 0 25px rgba(154, 109, 255, 0.2);
-  text-align: left;
-  transition: 0.5s;
-  scale: 0.9;
-}
-.activity-card:hover {
-  scale: 1;
-}
-
-.activity-card .card-header {
-  background: transparent;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 5px;
-  height: 50px;
-  margin-top: 10px;
-}
-
-.activity-card .card-body {
-  margin-left: 10px;
-  height: 75px;
-  display: flex;
-  flex-direction: row;
-  gap: 10px;
-  justify-content: left;
-  align-items: center;
-}
-
-.activity-card p {
-  margin-top: 20px;
-}
-
-.activity-card .card-body p {
-  margin-top: 13px;
-}
-
-.activity-card .text-bottom {
-  margin-top: 20px;
-}
-
-.badge {
-  margin-bottom: 10px;
-}
-
-.info {
-  max-width: 90%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  margin: 0 auto;
-}
-
-.add-ring {
-  margin-top:80px;
-}
-
-.add-text {
-  text-align: center;
-  font-size: 36px;
-  font-weight: 700;
-  color: #8b4dff;
-  margin-bottom: 20px;
-}
-
-.add-card {
-  background: white;
-  box-shadow: 0 4px 15px rgba(139, 77, 255, 0.15);
-  border-radius: 20px;
-  width: 80%;
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 30px; 
-  color: #8b4dff;
-}
-
-.subject-form {
-  flex: 1;
-  min-width: 200px;
-}
-
-.input-subject {
-  border: none;
-  border-bottom: 2px solid #d5c5ff;
-  width: 100%;
-  padding: 5px;
-  outline: none;
-  color: #6b4cff;
-}
-
-.sound-form {
-  flex: 1;
-  min-width: 200px;
-}
-
-.soundInput {
-  border: none;
-  border-bottom: 2px solid #d5c5ff;
-  width: 100%;
-  padding: 5px;
-  color: #6b4cff;
-}
-
-.custom-file-upload {
-  background-color: #6b4cff;
-  color: white;
-  padding: 6px 12px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: 600;
-  transition: 0.3s;
-}
-.custom-file-upload:hover {
-  background-color: #5938ff;
-}
-#file-name {
-  margin-left: 10px;
-  color: #6b4cff;
-  font-size: 14px;
-}
-
-.timeInput {
-  border: none;
-  border-bottom: 2px solid #d5c5ff;
-  padding: 5px;
-  outline: none;
-  color: #6b4cff;
-}
-
-.periodInput {
-  flex: 1;
-  min-width: 200px;
-  position: relative;
-  width: fit-content;
-}
-
-.periodInput .inputLabel {
-  /* Membuat unit "S" bisa diposisikan di dalam wrapper */
-    position: absolute; 
-    /* Posisikan unit "S" di kanan dalam wrapper */
-    right: 135px; 
-    /* Posisikan unit di tengah secara vertikal */
-    /* opacity: 0; */
-    top: 70%; 
-    transform: translateY(-50%);
-    display: inline-flex;
-    /* Sesuaikan gaya font dan warna */
-    color: #999; /* Warna abu-abu agar terlihat sebagai label tambahan */
-    font-size: 0.9em;
-    pointer-events: none; /* Penting! Agar user masih bisa klik input, bukan span */
-    z-index: 2; /* Pastikan unit "S" di atas input jika diperlukan */
-}
-
-.periodInput .durationInput {
-  /* Beri sedikit padding di kanan agar angka tidak tertutup unit "S" */
-    padding-right: 25px; 
-    /* Pastikan input berada di atas unit */
-    z-index: 1;
-}
+      /* Time Section */
 
 
+      #timeSection {
+        max-width: 520px;
+        margin: 0 auto 60px auto;
+        text-align: center;
+        background: white;
+      width: 520px;
+      padding: 35px 15px;
+      border-radius: 25px;
+      box-shadow: 0 0 25px rgba(154, 109, 255, 0.2);
+      transition: 0.5s;
+      }
+
+      #timeSection:hover {
+        scale: 1.1;
+      }
+
+      #mainTime {
+        font-size: 45px;
+        font-weight: 700;
+        color: #5f45ff;
+        margin-bottom: 4px;
+      }
+      #mainDate {
+        font-size: 15px;
+        font-weight: 600;
+        color: #9e8ef7;
+      }
+
+      /* Current and Next Bell Cards container */
+      #currentNextContainer {
+        display: flex;
+        max-width: 520px;
+        margin: 25px auto 50px auto;
+        gap: 20px;
+      }
+
+      .info-card {
+        background: white;
+        flex: 1;
+        border-radius: 15px;
+        padding: 18px 20px;
+        box-shadow: 0 3px 16px rgb(140 90 255 / 0.2);
+        text-align: left;
+        transition: 0.5s;
+      }
+
+      .info-card:hover {
+        scale: 1.05;
+      }
+
+      .info-card h5 {
+        font-weight: 600;
+        color: #5f45ff;
+        margin-bottom: 12px;
+      }
+
+      .current-subject {
+        font-weight: 700;
+        font-size: 19px;
+        color: #532aff;
+        margin-bottom: 6px;
+      }
+
+      .schedule-time {
+        font-weight: 600;
+        color: #7c5efe;
+      }
+
+      /* Next bell countdown */
+      .next-bell-countdown {
+        font-weight: 700;
+        font-size: 35px;
+        color: #5f45ff;
+        text-align: center;
+        margin-top: 16px;
+      }
+
+      /* Add Ring Form */
+      #addRingSection {
+        max-width: 520px;
+        margin: 0 auto;
+        background: white;
+        padding: 20px 25px 30px 25px;
+        border-radius: 15px;
+        box-shadow: 0 3px 20px rgba(130, 73, 255, 0.25);
+        color: #5f45ff;
+      }
+
+      #addRingSection h4 {
+        text-align: center;
+        font-weight: 700;
+        margin-bottom: 18px;
+      }
+
+      form label {
+        font-weight: 600;
+        color: #6b4cff;
+      }
+
+      .form-control,
+      .form-control:focus {
+        border-color: #a88eff;
+        box-shadow: none;
+        color: #5b3aff;
+      }
+
+      .custom-file-upload {
+        margin-top: 6px;
+        display: inline-block;
+        background-color: #6b4cff;
+        color: white;
+        padding: 6px 14px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: background-color 0.3s ease;
+        user-select: none;
+      }
+      .custom-file-upload:hover {
+        background-color: #4d33d9;
+      }
+
+      #file-name {
+        font-size: 13px;
+        color: #6b4cff;
+        margin-left: 12px;
+        vertical-align: middle;
+      }
+
+      /* Preview Card */
+      #previewCard {
+        background-color: #f3ecff;
+        border-radius: 12px;
+        padding: 18px 20px;
+        margin: 20px 0;
+        color: #6b4cff;
+      }
+      #previewCard h5 {
+        display: flex;
+        justify-content: space-between;
+        font-weight: 700;
+        margin-bottom: 6px;
+      }
+      #previewRingName {
+        font-weight: 600;
+        font-size: 17px;
+      }
+      #previewPeriod {
+        font-size: 14px;
+        color: #a393e6;
+      }
+
+      /* Button */
+      #addScheduleBtn {
+        display: block;
+        margin: 0 auto;
+        background-color: #713aff;
+        border: none;
+        padding: 10px 30px;
+        font-size: 14px;
+        border-radius: 18px;
+        font-weight: 700;
+        cursor: pointer;
+        color: white;
+        transition: background-color 0.3s ease;
+        user-select: none;
+      }
+      #addScheduleBtn:hover {
+        background-color: #5829cc;
+      }
+
+      /* Footer */
+      footer {
+        text-align: center;
+        margin-top: 40px;
+        font-size: 13px;
+        color: #6b4cff;
+        font-weight: 600;
+      }
     </style>
   </head>
   <body>
-    <div class="header">
-      <div class="logo gradient-color">
+    <header class="header">
+      <div class="logo">
         <i class="fa-solid fa-bell"></i> BelQ
       </div>
       <p class="subtitle">admin display dashboard</p>
+    </header>
 
-      <div class="main-time-card">
-        <h1 id="mainTime">--:--:--</h1>
-        <p id="dateText">Day, 00 Month Years</p>
+    <!-- Today's Activities -->
+    <section>
+      <div class="section-title">
+        <i class="fa-solid fa-table"></i> Today's activities
       </div>
-
-      <div class="container d-flex justify-content-between low-card">
-        <div class="info-cards">
-          <span class="fw-bold"
-            ><i class="fa-solid fa-alarm-clock"></i>Current time!</span
-          >
-          <span class="badge rounded-pill status-active text-bg-success"
-            >Active</span
-          >
-          <h3 class="fw-bold mt-3"id="currentSubject">Bahasa Indonesia</h3>
-          <p id="currentSchedule">10:40 - 12:00</p>
-        </div>
-        <div class="next-cards">
-          <span class="fw-bold"
-            ><i class="fa-solid fa-bell gradient-color me-2"></i>Next bell in
-            :</span
-          >
-          <p id="nextBellCountdown" class="nextBell">--:--</p>
-        </div>
-      </div>
-    </div>
-    <section class="info">
-      <div class="text">
-        <span class="gradient-color"
-          ><i class="fa-solid fa-table me-2 gradient-color"></i>Today's
-          activities</span
-        >
-      </div>
-      <div class="card">
-        <div class="activity-card">
-          <div class="card-header d-flex justify-content-between">
-            <p class="fw-bold">1st Ring</p>
-            <span class="badge rounded-pill text-bg-success text-bottom "
-              >Completed</span
-            >
-          </div>
-          <div class="card-body">
-            <h3 class="gradient-color fw-bold ">MPP</h3>
-            <p id="dateText" class="fw-bold">07:00-08:00</p>
-          </div>
-        </div>
-        <div class="activity-card">
-          <div class="card-header d-flex justify-content-between">
-            <p class="fw-bold">2nd Ring</p>
-            <span class="badge rounded-pill text-bg-success text-bottom"
-              >Completed</span
-            >
-          </div>
-          <div class="card-body">
-            <h3 class="gradient-color fw-bold">Databases</h3>
-            <p id="dateText" class="fw-bold">07:00-08:00</p>
-          </div>
-        </div>
-        <div class="activity-card">
-          <div class="card-header d-flex justify-content-between">
-            <p class="fw-bold">3rd Ring</p>
-            <span class="badge rounded-pill text-bg-success text-bottom"
-              >Completed</span
-            >
-          </div>
-          <div class="card-body">
-            <h4 class="gradient-color fw-bold">First Rest</h4>
-            <p id="dateText" class="fw-bold">07:00-08:00</p>
-          </div>
-        </div>
-        <div class="activity-card">
-          <div class="card-header d-flex justify-content-between">
-            <p class="fw-bold">4th Ring</p>
-            <span class="badge rounded-pill text-bg-warning text-bottom"
-              >Active</span
-            >
-          </div>
-          <div class="card-body">
-            <h4 class="gradient-color fw-bold">Bahasa Indonesia</h4>
-            <p id="dateText" class="fw-bold">07:00-08:00</p>
-          </div>
-        </div>
-        <div class="activity-card">
-          <div class="card-header d-flex justify-content-between">
-            <p class="fw-bold">1st Ring</p>
-            <span class="badge rounded-pill text-bg-success text-bottom"
-              >Completed</span
-            >
-          </div>
-          <div class="card-body">
-            <h4 class="gradient-color fw-bold">MPP</h4>
-            <p id="dateText" class="fw-bold">07:00-08:00</p>
-          </div>
-        </div>
-        <div class="activity-card">
-          <div class="card-header d-flex justify-content-between">
-            <p class="fw-bold">1st Ring</p>
-            <span class="badge rounded-pill text-bg-success text-bottom"
-              >Completed</span
-            >
-          </div>
-          <div class="card-body">
-            <h4 class="gradient-color fw-bold">MPP</h4>
-            <p id="dateText" class="fw-bold">07:00-08:00</p>
-          </div>
-        </div>
+      <div id="activitiesContainer">
+        <!-- Default activities will be added by script -->
       </div>
     </section>
 
-   <form action="/api/bells" method="POST" >
-      @csrf
-    <section class="add-ring">
-      <div class="add-text gradient-color">
-        <i class="fa-solid fa-bullhorn me-2"></i> Add rings!
-      </div>
+    <!-- Time Section -->
+    <section id="timeSection" class="mainTime-card">
+      <div id="mainTime">--:--:--</div>
+      <div id="mainDate">Day, 00 Month Years</div>
+    </section>
 
-      <div class="add-card">
-        <div
-          style="
-            display: flex;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 20px;
-          "
-        >
-          <div class="subject-form">
-            <label style="font-weight: 600;">Subject</label><br />
+    <!-- Current and Next Bell Info -->
+    <section id="currentNextContainer">
+      <div class="info-card" id="currentTimeCard">
+        <h5><i class="fa-solid fa-alarm-clock"></i> Current time!</h5>
+        <div class="current-subject" id="currentSubject">No Schedule</div>
+        <div class="schedule-time" id="currentSchedule">--:--</div>
+      </div>
+      <div class="info-card" id="nextBellCard">
+        <h5><i class="fa-solid fa-bell"></i> Next bell in :</h5>
+        <div class="next-bell-countdown" id="nextBellCountdown">--:--</div>
+      </div>
+    </section>
+
+    <!-- Add Rings Form -->
+    <section id="addRingSection">
+      <h4><i class="fa-solid fa-bullhorn"></i> Add rings!</h4>
+      <form id="addRingForm" novalidate method="post" action="/api/bells">
+        @csrf
+        <div class="mb-3">
+          <label for="subjectInput" class="form-label">Subject</label>
+          <input
+            type="text"
+            class="form-control"
+            id="subjectInput"
+            placeholder="Example: Bahasa Indonesia"
+            autocomplete="off"
+            required
+            name="subject"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label for="soundInput" class="form-label">Sound (MP3)</label><br />
+          <label for="soundInput" class="custom-file-upload"
+            >Choose MP3</label
+          >
+          <span id="file-name">No file chosen</span>
+          <input
+            type="file"
+            id="soundInput"
+            accept=".mp3,audio/mpeg"
+            style="display: none"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Period (Start and End Time)</label>
+          <div class="d-flex gap-2">
             <input
-              type="text"
-              placeholder="example"
-              class="input-subject"
-              id="subjectInput"
-              name="subject"
-              required/>
-              
-          </div>
-          <div class="sound-form">
-    <label for="soundInput" style="font-weight: 600; color: #6b4cff;">Sound</label><br />
-    <label for="soundInput" class="custom-file-upload">Choose MP3</label>
-    <span id="file-name">No file chosen</span>
-    <input
-      type="file"
-      id="soundInput"
-      accept=".mp3,audio/mpeg"
-      style="display: none;"
-    />
-</div>
-
-          <div class="periodInput">
-            <label style="font-weight: 600;">Period(Time & Long)</label><br />
-            <div style="display: flex; align-items: center; gap: 10px;">
-              <input
-                type="time"
-                class="timeInput"
-                id="startTime"
-                name="start_time"
-                required
-              />
-            <div style="display: flex; align-items: center; gap: 10px;">
-              <input
-                type="time"
-                class="timeInput"
-                id="EndTime"
-                name="end_time"
-                required
-              />
-              </div>
-            </div>
+              type="time"
+              class="form-control"
+              id="startTime"
+              name="start_time"
+              required
+            />
+            <input
+              type="time"
+              class="form-control"
+              id="endTime"
+              name="end_time"
+              required
+            />
           </div>
         </div>
 
-        <hr style="border: none; border-top: 1px solid #eee; margin: 25px 0;" />
-
-        <h3 style="text-align: center; color: #8b4dff; font-weight: 600;">
-          Preview
-        </h3>
-
-        <div
-          style="
-            background-color: #f3ecff;
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 20px;
-          "
-        >
-          <h4
-            style="
-              display: flex;
-              justify-content: space-between;
-              margin: 0;
-              color: #6b4cff;
-            "
-          >
-            .. Ring! <span style="background: #ede3ff; padding: 4px 10px; border-radius: 15px; font-size: 12px;">Upcoming</span>
-          </h4>
-          <div style="margin-top: 15px; font-weight: 600;" id="ringNamePreview">Ring name</div>
-          <div style="font-size: 14px; color: #a393e6;" id="periodPreview">Period</div> 
+        <!-- Preview -->
+        <div id="previewCard">
+          <h5>
+            .. Ring!
+            <span class="badge badge-upcoming">Upcoming</span>
+          </h5>
+          <div id="previewRingName">Ring name</div>
+          <div id="previewPeriod">Period</div>
         </div>
 
-        <button
-        style="
-            display: block;
-            margin: 0 auto;
-            background-color: #8b4dff;
-            color: white;
-            border: none;
-            border-radius: 20px;
-            padding: 10px 30px;
-            font-size: 14px;
-            cursor: pointer;
-            transition: 0.3s;
-            "
-          class="btn gradient-color"
-          type="submit"
-          >
-          Add to schedule
-        </button>
-      </div>
-
-      <p
-        style="
-          text-align: center;
-          color: #8b4dff;
-          font-size: 13px;
-          margin-top: 30px;
-        "
-      >
-        created by: <b>XI PPLG</b>
-      </p>
+        <button type="submit" id="addScheduleBtn">Add to schedule</button>
+      </form>
     </section>
-    </form>
-    </form>
 
+    <footer>created by: <b>XI PPLG</b> kelompok 1</footer>
 
-    <script src="assets/bootstrap-5.3.7-dist/js/bootstrap.min.js"></script>
-    <script src="script.js"></script>
+    <!-- Bootstrap Bundle JS (Popper included) -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+      crossorigin="anonymous"
+    ></script>
+
     <script>
+      // Utilities
+      function formatTime(date) {
+        return date.toLocaleTimeString("en-US", {
+          hour12: false,
+          hour: "2-digit",
+          minute: "2-digit",
+        });
+      }
 
-  const timeInputs = document.querySelectorAll('.timeInput');
+      // Show time picker on click for time inputs
+      const timeInputs = document.querySelectorAll('input[type="time"]');
+      timeInputs.forEach((input) => {
+        input.addEventListener("click", () => {
+          input.showPicker();
+        });
+      });
 
-  timeInputs.forEach(input => {
-    input.addEventListener('click', function () {
-      this.showPicker();
-    });
-  });
-
-  setInterval(updateClock, 1000);
-  updateClock();
-
-  const soundInput = document.getElementById('soundInput');
-  soundInput.addEventListener('change', function() {
-    const file = this.files[0];
-    if (file && file.type !== 'audio/mpeg') {
-      alert('Hanya file MP3 yang diperbolehkan!');
-      this.value = ''; // reset input
-    }
-  });
-
-  // 1. Ambil elemen input berdasarkan ID yang sudah ditetapkan/diperbaiki
-    const subjectInput = document.getElementById('subjectInput');
-    const startTimeInput = document.getElementById('startTime');
-    const durationInput = document.getElementById('durationInput'); // Mengambil ID yang baru
-    
-    // 2. Ambil elemen preview berdasarkan ID yang baru ditambahkan
-    const ringNamePreview = document.getElementById('ringNamePreview');
-    const periodPreview = document.getElementById('periodPreview');
-    
-    // 3. Fungsi untuk mengupdate semua elemen preview
-    function updatePreview() {
-        // Ambil nilai dari input. Jika kosong, gunakan teks default.
-        const subject = subjectInput.value.trim() || 'Ring name'; 
-        const startTime = startTimeInput.value.trim() || '--:--';
-        const duration = durationInput.value.trim() || '5';
-
-        // Update Ring Name Preview
-        ringNamePreview.textContent = subject;
-
-        // Update Period Preview (menggabungkan waktu dan durasi)
-        periodPreview.textContent = `${startTime} (${duration} seconds)`; 
-    }
-    
-    // 4. Daftarkan event listener untuk memicu update setiap kali input berubah
-    subjectInput.addEventListener('input', updatePreview);
-    startTimeInput.addEventListener('input', updatePreview);
-    durationInput.addEventListener('input', updatePreview);
-
-    // 5. Panggil sekali saat halaman dimuat (untuk menampilkan nilai default/awal)
-    document.addEventListener('DOMContentLoaded', updatePreview);
-    
-    
-    function updateClock() {
-  const now = new Date();
-  document.getElementById('mainTime').innerText = now.toLocaleTimeString();
-  
-  const options = {
-    weekday: 'long',
-    month: 'long',
-    day: 'numeric',
-    year: 'numeric',
-  };
-  document.getElementById('dateText').innerText = now.toLocaleDateString(
-    'en-US',
-    options
-  );
-  }
-
-  // TARGET: container card Today's activities
-const activityContainer = document.querySelector(".card");
-
-// BUTTON add to schedule
-const addButton = document.querySelector(".add-card button");
-
-let ringCount = 7; // biar lanjut dari data sebelumnya
-
-addButton.addEventListener("click", function (e) {
-    e.preventDefault();
-
-    const subject = subjectInput.value.trim();
-    const startTime = startTimeInput.value.trim();
-    const duration = durationInput.value.trim();
-
-    if (!subject || !startTime || !duration) {
-        alert("Isi semua field sebelum menambahkan jadwal!");
-        return;
-    }
-
-    // Hitung endTime
-    const [hour, minute] = startTime.split(":").map(Number);
-    const endDate = new Date();
-    endDate.setHours(hour, minute + Number(duration));
-
-    const endHour = String(endDate.getHours()).padStart(2, "0");
-    const endMinute = String(endDate.getMinutes()).padStart(2, "0");
-
-    const periodText = `${startTime}-${endHour}:${endMinute}`;
-
-    // TEMPLATE CARD BARU
-    const newCard = document.createElement("div");
-    newCard.classList.add("activity-card");
-    newCard.innerHTML = `
-        <div class="card-header d-flex justify-content-between">
-            <p class="fw-bold">${ringCount}th Ring</p>
-            <span class="badge rounded-pill text-bg-warning text-bottom">Upcoming</span>
-        </div>
-        <div class="card-body">
-            <h4 class="gradient-color fw-bold">${subject}</h4>
-            <p class="fw-bold">${periodText}</p>
-        </div>
-    `;
-
-    // Masukkan card baru ke paling bawah
-    activityContainer.appendChild(newCard);
-
-    ringCount++;
-
-    // Reset form
-    subjectInput.value = "";
-    startTimeInput.value = "";
-    durationInput.value = "5";
-    updatePreview();
-
-    alert("Jadwal berhasil ditambahkan!");
-});
-
-// =======================
-// NEXT BELL COUNTDOWN LOGIC
-// =======================
-
-let countdownInterval = null;
-
-// Ambil semua card, cari jadwal upcoming terdekat
-function getNextBellTime() {
-    const cards = document.querySelectorAll(".activity-card");
-
-    let now = new Date();
-    let closestTime = null;
-
-    cards.forEach(card => {
-        const timeText = card.querySelector(".card-body p").textContent;
-        const startTime = timeText.split("-")[0]; // contoh "07:00"
-
-        const [h, m] = startTime.split(":").map(Number);
-
-        const scheduled = new Date();
-        scheduled.setHours(h, m, 0, 0);
-
-        if (scheduled > now) {
-            if (closestTime === null || scheduled < closestTime) {
-                closestTime = scheduled;
-            }
-        }
-    });
-
-    return closestTime;
-}
-
-// Update countdown
-function startNextBellCountdown() {
-    if (countdownInterval) clearInterval(countdownInterval);
-
-    const nextBell = getNextBellTime();
-    const countdownEl = document.getElementById("nextBellCountdown");
-
-    if (!nextBell) {
-        countdownEl.textContent = "--:--";
-        return;
-    }
-
-    countdownInterval = setInterval(() => {
+      // Clock update
+      const mainTimeEl = document.getElementById("mainTime");
+      const mainDateEl = document.getElementById("mainDate");
+      function updateClock() {
         const now = new Date();
-        const diff = nextBell - now;
+        mainTimeEl.textContent = now.toLocaleTimeString("en-US", {
+          hour12: true,
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit",
+        });
+        mainDateEl.textContent = now.toLocaleDateString("en-US", {
+          weekday: "long",
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        });
+      }
+      setInterval(updateClock, 1000);
+      updateClock();
 
-        if (diff <= 0) {
-            clearInterval(countdownInterval);
-            countdownEl.textContent = "00:00";
-            startNextBellCountdown(); // cari jadwal berikutnya
+      // Sound file input
+      const soundInput = document.getElementById("soundInput");
+      const fileNameSpan = document.getElementById("file-name");
+      soundInput.addEventListener("change", () => {
+        const file = soundInput.files[0];
+        if (file) {
+          if (file.type !== "audio/mpeg") {
+            alert("Only MP3 files are allowed!");
+            soundInput.value = "";
+            fileNameSpan.textContent = "No file chosen";
             return;
+          }
+          fileNameSpan.textContent = file.name;
+        } else {
+          fileNameSpan.textContent = "No file chosen";
+        }
+      });
+
+      // Elements for form inputs and preview
+      const subjectInput = document.getElementById("subjectInput");
+      const startTimeInput = document.getElementById("startTime");
+      const endTimeInput = document.getElementById("endTime");
+      const previewRingName = document.getElementById("previewRingName");
+      const previewPeriod = document.getElementById("previewPeriod");
+
+      // Preview update function
+      function updatePreview() {
+        const subject = subjectInput.value.trim() || "Ring name";
+        const start = startTimeInput.value.trim();
+        const end = endTimeInput.value.trim();
+
+        previewRingName.textContent = subject;
+
+        if (start && end) {
+          previewPeriod.textContent = `${start} - ${end}`;
+        } else {
+          previewPeriod.textContent = "Period";
+        }
+      }
+
+      subjectInput.addEventListener("input", updatePreview);
+      startTimeInput.addEventListener("input", updatePreview);
+      endTimeInput.addEventListener("input", updatePreview);
+
+      document.addEventListener("DOMContentLoaded", updatePreview);
+
+      // Container for activities and count for ring number
+      const activitiesContainer = document.getElementById("activitiesContainer");
+      let ringCount = 1;
+
+      // Helper to create option badge element with class & text content
+      function createBadge(status) {
+        const span = document.createElement("span");
+        span.classList.add("badge");
+        if (status === "completed") {
+          span.classList.add("badge-completed");
+          span.textContent = "Completed";
+        } else if (status === "active") {
+          span.classList.add("badge-active");
+          span.textContent = "Active";
+        } else {
+          span.classList.add("badge-upcoming");
+          span.textContent = "Upcoming";
+        }
+        return span;
+      }
+
+      // Function to create and append activity card
+      function addActivityCard(subject, period, status) {
+        const card = document.createElement("div");
+        card.classList.add("activity-card");
+
+        // Header with ring number and badge
+        const header = document.createElement("div");
+        header.className = "activity-header";
+        header.innerHTML = `<div>${ringCount}th Ring</div>`;
+        header.appendChild(createBadge(status));
+        card.appendChild(header);
+
+        // Subject + time
+        const subjectEl = document.createElement("div");
+        subjectEl.className = "activity-subject";
+        subjectEl.textContent = subject;
+        card.appendChild(subjectEl);
+
+        const timeEl = document.createElement("div");
+        timeEl.className = "activity-time";
+        timeEl.textContent = period;
+        card.appendChild(timeEl);
+
+        activitiesContainer.appendChild(card);
+        ringCount++;
+      }
+
+      // Preload default activities (as example)
+      const defaultActivities = [
+        {
+          subject: "Bahasa Indonesia",
+          period: "07:00 - 08:00",
+          status: "upcoming",
+          date: "Friday, November 14, 2025",
+        },
+        
+      ];
+
+      function loadDefaultActivities() {
+        defaultActivities.forEach((act) => {
+          addActivityCard(act.subject, act.period, act.status);
+        });
+      }
+
+      // Load defaults on DOM ready
+      document.addEventListener("DOMContentLoaded", loadDefaultActivities);
+
+      // Form submit (Add to schedule)
+      const addRingForm = document.getElementById("addRingForm");
+      addRingForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+
+        const subject = subjectInput.value.trim();
+        const start = startTimeInput.value.trim();
+        const end = endTimeInput.value.trim();
+        if (!subject || !start || !end) {
+          alert("Please fill all fields before adding schedule!");
+          return;
         }
 
-        let minutes = Math.floor(diff / 1000 / 60);
-        let seconds = Math.floor((diff / 1000) % 60);
+        // Validate start < end
+        if (start >= end) {
+          alert("End time must be after start time!");
+          return;
+        }
 
-        countdownEl.textContent =
-            `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+        // Tambahkan activity baru dengan status upcoming
+        addActivityCard(subject, `${start}-${end}`, "upcoming");
 
-    }, 1000);
-}
+        // Reset form and preview
+        addRingForm.reset();
+        updatePreview();
+        fileNameSpan.textContent = "No file chosen";
 
-// Jalankan countdown saat halaman dibuka
-document.addEventListener("DOMContentLoaded", startNextBellCountdown);
+        // Update countdown and current time after slight delay
+        setTimeout(() => {
+          updateCurrentTimeCard();
+          startNextBellCountdown();
+        }, 200);
+      });
 
-// Jalankan countdown ulang setelah user klik Add Schedule
-addButton.addEventListener("click", function() {
-    setTimeout(startNextBellCountdown, 300); 
-});
+      // ====== CURRENT TIME & UPCOMING SCHEDULE LOGIC ======
+      const currentSubjectEl = document.getElementById("currentSubject");
+      const currentScheduleEl = document.getElementById("currentSchedule");
+      const nextBellCountdownEl = document.getElementById("nextBellCountdown");
 
-// ==============================
-// CURRENT TIME AUTO UPDATE LOGIC
-// ==============================
-
-// Elemen UI
-const currentSubjectEl = document.getElementById("currentSubject");
-const currentScheduleEl = document.getElementById("currentSchedule");
-
-// Ambil semua jadwal dari card
-function getAllSchedules() {
-    const cards = document.querySelectorAll(".activity-card");
-    const schedules = [];
-
-    cards.forEach(card => {
-        const subject = card.querySelector(".card-body h3, .card-body h4").textContent.trim();
-        const timeText = card.querySelector(".card-body p").textContent.trim(); // contoh "07:00-08:00"
-
-        const [start, end] = timeText.split("-");
-
-        schedules.push({
+      // Parse all time strings on activities and return schedules list
+      function getSchedules() {
+        const cards = document.querySelectorAll(".activity-card");
+        let schedules = [];
+        cards.forEach((card) => {
+          const subject = card.querySelector(".activity-subject").textContent;
+          const periodText = card.querySelector(".activity-time").textContent;
+          const [start, end] = periodText.split("-");
+          schedules.push({
             subject,
             start,
-            end
+            end,
+          });
         });
-    });
+        return schedules;
+      }
 
-    return schedules;
-}
+      // Get current active schedule if any
+      function getCurrentSchedule() {
+        const now = new Date();
 
-// Cek jadwal yang sedang aktif
-function getCurrentSchedule() {
-    const now = new Date();
-    const schedules = getAllSchedules();
+        const schedules = getSchedules();
 
-    for (let sch of schedules) {
-        const [sh, sm] = sch.start.split(":").map(Number);
-        const [eh, em] = sch.end.split(":").map(Number);
+        for (const sch of schedules) {
+          const [sh, sm] = sch.start.split(":").map(Number);
+          const [eh, em] = sch.end.split(":").map(Number);
 
-        const startTime = new Date();
-        startTime.setHours(sh, sm, 0, 0);
+          const startTime = new Date();
+          startTime.setHours(sh, sm, 0, 0);
 
-        const endTime = new Date();
-        endTime.setHours(eh, em, 0, 0);
+          const endTime = new Date();
+          endTime.setHours(eh, em, 0, 0);
 
-        if (now >= startTime && now <= endTime) {
-            return sch; // jadwal sedang berjalan
+          if (now >= startTime && now < endTime) {
+            return sch;
+          }
         }
-    }
+        return null;
+      }
 
-    return null;
-}
+      // Get next upcoming schedule
+      function getUpcomingSchedule() {
+        const now = new Date();
+        const schedules = getSchedules();
 
-// Cari jadwal berikutnya
-function getUpcomingSchedule() {
-    const now = new Date();
-    const schedules = getAllSchedules();
+        let closest = null;
 
-    let closest = null;
+        for (const sch of schedules) {
+          const [sh, sm] = sch.start.split(":").map(Number);
+          const scheduleTime = new Date();
+          scheduleTime.setHours(sh, sm, 0, 0);
 
-    schedules.forEach(sch => {
-        const [sh, sm] = sch.start.split(":").map(Number);
-        const t = new Date();
-        t.setHours(sh, sm, 0, 0);
-
-        if (t > now) {
-            if (!closest || t < closest.time) {
-                closest = { ...sch, time: t };
+          if (scheduleTime > now) {
+            if (!closest || scheduleTime < closest.time) {
+              closest = { ...sch, time: scheduleTime };
             }
+          }
         }
-    });
+        return closest;
+      }
 
-    return closest;
-}
+      // Update current time card display
+      function updateCurrentTimeCard() {
+        const active = getCurrentSchedule();
+        const upcoming = getUpcomingSchedule();
 
-// Update UI Current Time Card
-function updateCurrentTimeCard() {
-    const active = getCurrentSchedule();
-    const upcoming = getUpcomingSchedule();
+        if (active) {
+          currentSubjectEl.textContent = active.subject;
+          currentScheduleEl.textContent = `${active.start} - ${active.end}`;
+        } else if (upcoming) {
+          currentSubjectEl.textContent = upcoming.subject + " (Upcoming)";
+          currentScheduleEl.textContent = `${upcoming.start} - ${upcoming.end}`;
+        } else {
+          currentSubjectEl.textContent = "No Schedule";
+          currentScheduleEl.textContent = "--:--";
+        }
+      }
 
-    if (active) {
-        // Tampilkan yang sedang aktif
-        currentSubjectEl.textContent = active.subject;
-        currentScheduleEl.textContent = `${active.start} - ${active.end}`;
-    } else if (upcoming) {
-        // Kalau belum mulai apa pun, tampilkan jadwal berikutnya
-        currentSubjectEl.textContent = upcoming.subject + " (Upcoming)";
-        currentScheduleEl.textContent = `${upcoming.start} - ${upcoming.end}`;
-    } else {
-        // Tidak ada jadwal lagi
-        currentSubjectEl.textContent = "No Schedule";
-        currentScheduleEl.textContent = "--:--";
-    }
-}
+      // ====== NEXT BELL COUNTDOWN LOGIC ======
+      let countdownInterval = null;
 
-// Update setiap detik
-setInterval(updateCurrentTimeCard, 1000);
-updateCurrentTimeCard();
+      function startNextBellCountdown() {
+        if (countdownInterval) clearInterval(countdownInterval);
 
-// Update card ketika user menambah jadwal
-addButton.addEventListener("click", () => {
-    setTimeout(updateCurrentTimeCard, 200);
-});
+        const now = new Date();
+        const schedules = getSchedules();
 
-</script>
+        // Find closest upcoming start time
+        let nextBellTime = null;
+        schedules.forEach((sch) => {
+          const [sh, sm] = sch.start.split(":").map(Number);
+          const scheduleTime = new Date();
+          scheduleTime.setHours(sh, sm, 0, 0);
+          if (scheduleTime > now) {
+            if (!nextBellTime || scheduleTime < nextBellTime) {
+              nextBellTime = scheduleTime;
+            }
+          }
+        });
+
+        if (!nextBellTime) {
+          nextBellCountdownEl.textContent = "--:--";
+          return;
+        }
+
+        countdownInterval = setInterval(() => {
+          const now = new Date();
+          const diff = nextBellTime - now;
+
+          if (diff <= 0) {
+            clearInterval(countdownInterval);
+            nextBellCountdownEl.textContent = "00:00";
+            startNextBellCountdown(); // restart cari jadwal berikutnya
+            updateCurrentTimeCard();
+            return;
+          }
+
+          const minutes = Math.floor(diff / 1000 / 60);
+          const seconds = Math.floor((diff / 1000) % 60);
+
+          nextBellCountdownEl.textContent =
+            String(minutes).padStart(2, "0") +
+            ":" +
+            String(seconds).padStart(2, "0");
+        }, 1000);
+      }
+
+      // Initialize Current time & Next bell countdown on page load
+      document.addEventListener("DOMContentLoaded", () => {
+        updateCurrentTimeCard();
+        startNextBellCountdown();
+      });
+
+      // Update current time card every second
+      setInterval(updateCurrentTimeCard, 1000);
+    </script>
   </body>
 </html>
