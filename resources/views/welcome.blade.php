@@ -128,6 +128,10 @@
   margin-top: 20px;
 }
 
+.next-cards .nextBell {
+  font-size: 50px;
+}
+
 .text {
   font-size: 35px;
   font-weight: 600;
@@ -288,6 +292,37 @@
   color: #6b4cff;
 }
 
+.periodInput {
+  flex: 1;
+  min-width: 200px;
+  position: relative;
+  width: fit-content;
+}
+
+.periodInput .inputLabel {
+  /* Membuat unit "S" bisa diposisikan di dalam wrapper */
+    position: absolute; 
+    /* Posisikan unit "S" di kanan dalam wrapper */
+    right: 135px; 
+    /* Posisikan unit di tengah secara vertikal */
+    /* opacity: 0; */
+    top: 70%; 
+    transform: translateY(-50%);
+    display: inline-flex;
+    /* Sesuaikan gaya font dan warna */
+    color: #999; /* Warna abu-abu agar terlihat sebagai label tambahan */
+    font-size: 0.9em;
+    pointer-events: none; /* Penting! Agar user masih bisa klik input, bukan span */
+    z-index: 2; /* Pastikan unit "S" di atas input jika diperlukan */
+}
+
+.periodInput .durationInput {
+  /* Beri sedikit padding di kanan agar angka tidak tertutup unit "S" */
+    padding-right: 25px; 
+    /* Pastikan input berada di atas unit */
+    z-index: 1;
+}
+
 
     </style>
   </head>
@@ -311,7 +346,7 @@
           <span class="badge rounded-pill status-active text-bg-success"
             >Active</span
           >
-          <h3 id="currentSubject">Bahasa Indonesia</h3>
+          <h3 class="fw-bold mt-3"id="currentSubject">Bahasa Indonesia</h3>
           <p id="currentSchedule">10:40 - 12:00</p>
         </div>
         <div class="next-cards">
@@ -319,7 +354,7 @@
             ><i class="fa-solid fa-bell gradient-color me-2"></i>Next bell in
             :</span
           >
-          <p id="nextTime">--:--</p>
+          <p id="nextBellCountdown" class="nextBell">--:--</p>
         </div>
       </div>
     </div>
@@ -406,7 +441,11 @@
       </div>
     </section>
 
+<<<<<<< HEAD
      <form action="/api/bells" method="post" enctype="multipart/form-data">
+=======
+   <form action="/" method="#" >
+>>>>>>> fafa3384bc7fe41898b49c564031a7f50c4c7aaa
       @csrf
     <section class="add-ring">
       <div class="add-text gradient-color">
@@ -434,20 +473,19 @@
               
           </div>
           <div class="sound-form">
-  <label for="soundInput" style="font-weight: 600; color: #6b4cff;">Sound</label><br />
-  <label for="soundInput" class="custom-file-upload">Choose MP3</label>
-  <span id="file-name">No file chosen</span>
-  <input
-    type="file"
-    id="soundInput"
-    accept=".mp3,audio/mpeg"
-    style="display: none;"
-    name="sound"
-  />
+    <label for="soundInput" style="font-weight: 600; color: #6b4cff;">Sound</label><br />
+    <label for="soundInput" class="custom-file-upload">Choose MP3</label>
+    <span id="file-name">No file chosen</span>
+    <input
+      type="file"
+      id="soundInput"
+      accept=".mp3,audio/mpeg"
+      style="display: none;"
+    />
 </div>
 
-          <div style="flex: 1; min-width: 200px;">
-            <label style="font-weight: 600;">Period</label><br />
+          <div class="periodInput">
+            <label style="font-weight: 600;">Period(Time & Long)</label><br />
             <div style="display: flex; align-items: center; gap: 10px;">
               <input
                 type="time"
@@ -456,6 +494,7 @@
                 name="start_time"
                 required
               />
+<<<<<<< HEAD
               <span>to</span>
               <input
                 type="time"
@@ -464,6 +503,18 @@
                 name="end_time"
                 required
               />
+=======
+              <div style="display: flex; align-items: center; gap: 10px;">
+                <input
+                type="number"
+                min="1"
+                max="60"
+                value="5"
+                class="timeInput durationInput"
+                id="durationInput" />
+                <span class="inputLabel">S</span>
+              </div>
+>>>>>>> fafa3384bc7fe41898b49c564031a7f50c4c7aaa
             </div>
           </div>
         </div>
@@ -492,8 +543,8 @@
           >
             .. Ring! <span style="background: #ede3ff; padding: 4px 10px; border-radius: 15px; font-size: 12px;">Upcoming</span>
           </h4>
-          <div style="margin-top: 15px; font-weight: 600;">Ring name</div>
-          <div style="font-size: 14px; color: #a393e6;">Period</div>
+          <div style="margin-top: 15px; font-weight: 600;" id="ringNamePreview">Ring name</div>
+          <div style="font-size: 14px; color: #a393e6;" id="periodPreview">Period</div> 
         </div>
 
         <button
@@ -528,6 +579,7 @@
       </p>
     </section>
     </form>
+    </form>
 
 
     <script src="assets/bootstrap-5.3.7-dist/js/bootstrap.min.js"></script>
@@ -542,23 +594,8 @@
     });
   });
 
-    function updateClock() {
-  const now = new Date();
-  document.getElementById('mainTime').innerText = now.toLocaleTimeString();
-
-  const options = {
-    weekday: 'long',
-    month: 'long',
-    day: 'numeric',
-    year: 'numeric',
-  };
-  document.getElementById('dateText').innerText = now.toLocaleDateString(
-    'en-US',
-    options
-  );
-}
-setInterval(updateClock, 1000);
-updateClock();
+  setInterval(updateClock, 1000);
+  updateClock();
 
   const soundInput = document.getElementById('soundInput');
   soundInput.addEventListener('change', function() {
@@ -569,33 +606,286 @@ updateClock();
     }
   });
 
-  const subjectInput = document.getElementById("subjectInput");
-      const startTime = document.getElementById("startTime");
-      const endTime = document.getElementById("endTime");
-      
-       subjectInput.addEventListener("input", () => {
-      previewSubject.textContent = subjectInput.value || "-";
+  // 1. Ambil elemen input berdasarkan ID yang sudah ditetapkan/diperbaiki
+    const subjectInput = document.getElementById('subjectInput');
+    const startTimeInput = document.getElementById('startTime');
+    const durationInput = document.getElementById('durationInput'); // Mengambil ID yang baru
+    
+    // 2. Ambil elemen preview berdasarkan ID yang baru ditambahkan
+    const ringNamePreview = document.getElementById('ringNamePreview');
+    const periodPreview = document.getElementById('periodPreview');
+    
+    // 3. Fungsi untuk mengupdate semua elemen preview
+    function updatePreview() {
+        // Ambil nilai dari input. Jika kosong, gunakan teks default.
+        const subject = subjectInput.value.trim() || 'Ring name'; 
+        const startTime = startTimeInput.value.trim() || '--:--';
+        const duration = durationInput.value.trim() || '5';
+
+        // Update Ring Name Preview
+        ringNamePreview.textContent = subject;
+
+        // Update Period Preview (menggabungkan waktu dan durasi)
+        periodPreview.textContent = `${startTime} (${duration} seconds)`; 
+    }
+    
+    // 4. Daftarkan event listener untuk memicu update setiap kali input berubah
+    subjectInput.addEventListener('input', updatePreview);
+    startTimeInput.addEventListener('input', updatePreview);
+    durationInput.addEventListener('input', updatePreview);
+
+    // 5. Panggil sekali saat halaman dimuat (untuk menampilkan nilai default/awal)
+    document.addEventListener('DOMContentLoaded', updatePreview);
+    
+    
+    function updateClock() {
+  const now = new Date();
+  document.getElementById('mainTime').innerText = now.toLocaleTimeString();
+  
+  const options = {
+    weekday: 'long',
+    month: 'long',
+    day: 'numeric',
+    year: 'numeric',
+  };
+  document.getElementById('dateText').innerText = now.toLocaleDateString(
+    'en-US',
+    options
+  );
+  }
+
+  // TARGET: container card Today's activities
+const activityContainer = document.querySelector(".card");
+
+// BUTTON add to schedule
+const addButton = document.querySelector(".add-card button");
+
+let ringCount = 7; // biar lanjut dari data sebelumnya
+
+addButton.addEventListener("click", function (e) {
+    e.preventDefault();
+
+    const subject = subjectInput.value.trim();
+    const startTime = startTimeInput.value.trim();
+    const duration = durationInput.value.trim();
+
+    if (!subject || !startTime || !duration) {
+        alert("Isi semua field sebelum menambahkan jadwal!");
+        return;
+    }
+
+    // Hitung endTime
+    const [hour, minute] = startTime.split(":").map(Number);
+    const endDate = new Date();
+    endDate.setHours(hour, minute + Number(duration));
+
+    const endHour = String(endDate.getHours()).padStart(2, "0");
+    const endMinute = String(endDate.getMinutes()).padStart(2, "0");
+
+    const periodText = `${startTime}-${endHour}:${endMinute}`;
+
+    // TEMPLATE CARD BARU
+    const newCard = document.createElement("div");
+    newCard.classList.add("activity-card");
+    newCard.innerHTML = `
+        <div class="card-header d-flex justify-content-between">
+            <p class="fw-bold">${ringCount}th Ring</p>
+            <span class="badge rounded-pill text-bg-warning text-bottom">Upcoming</span>
+        </div>
+        <div class="card-body">
+            <h4 class="gradient-color fw-bold">${subject}</h4>
+            <p class="fw-bold">${periodText}</p>
+        </div>
+    `;
+
+    // Masukkan card baru ke paling bawah
+    activityContainer.appendChild(newCard);
+
+    ringCount++;
+
+    // Reset form
+    subjectInput.value = "";
+    startTimeInput.value = "";
+    durationInput.value = "5";
+    updatePreview();
+
+    alert("Jadwal berhasil ditambahkan!");
+});
+
+// =======================
+// NEXT BELL COUNTDOWN LOGIC
+// =======================
+
+let countdownInterval = null;
+
+// Ambil semua card, cari jadwal upcoming terdekat
+function getNextBellTime() {
+    const cards = document.querySelectorAll(".activity-card");
+
+    let now = new Date();
+    let closestTime = null;
+
+    cards.forEach(card => {
+        const timeText = card.querySelector(".card-body p").textContent;
+        const startTime = timeText.split("-")[0]; // contoh "07:00"
+
+        const [h, m] = startTime.split(":").map(Number);
+
+        const scheduled = new Date();
+        scheduled.setHours(h, m, 0, 0);
+
+        if (scheduled > now) {
+            if (closestTime === null || scheduled < closestTime) {
+                closestTime = scheduled;
+            }
+        }
     });
 
-    soundInput.addEventListener("change", () => {
-      const file = soundInput.files[0];
-      if (file) {
-        fileName.textContent = file.name;
-        previewSound.textContent = file.name;
-      } else {
-        fileName.textContent = "No file chosen";
-        previewSound.textContent = "No file";
-      }
+    return closestTime;
+}
+
+// Update countdown
+function startNextBellCountdown() {
+    if (countdownInterval) clearInterval(countdownInterval);
+
+    const nextBell = getNextBellTime();
+    const countdownEl = document.getElementById("nextBellCountdown");
+
+    if (!nextBell) {
+        countdownEl.textContent = "--:--";
+        return;
+    }
+
+    countdownInterval = setInterval(() => {
+        const now = new Date();
+        const diff = nextBell - now;
+
+        if (diff <= 0) {
+            clearInterval(countdownInterval);
+            countdownEl.textContent = "00:00";
+            startNextBellCountdown(); // cari jadwal berikutnya
+            return;
+        }
+
+        let minutes = Math.floor(diff / 1000 / 60);
+        let seconds = Math.floor((diff / 1000) % 60);
+
+        countdownEl.textContent =
+            `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+
+    }, 1000);
+}
+
+// Jalankan countdown saat halaman dibuka
+document.addEventListener("DOMContentLoaded", startNextBellCountdown);
+
+// Jalankan countdown ulang setelah user klik Add Schedule
+addButton.addEventListener("click", function() {
+    setTimeout(startNextBellCountdown, 300); 
+});
+
+// ==============================
+// CURRENT TIME AUTO UPDATE LOGIC
+// ==============================
+
+// Elemen UI
+const currentSubjectEl = document.getElementById("currentSubject");
+const currentScheduleEl = document.getElementById("currentSchedule");
+
+// Ambil semua jadwal dari card
+function getAllSchedules() {
+    const cards = document.querySelectorAll(".activity-card");
+    const schedules = [];
+
+    cards.forEach(card => {
+        const subject = card.querySelector(".card-body h3, .card-body h4").textContent.trim();
+        const timeText = card.querySelector(".card-body p").textContent.trim(); // contoh "07:00-08:00"
+
+        const [start, end] = timeText.split("-");
+
+        schedules.push({
+            subject,
+            start,
+            end
+        });
     });
 
-    const updatePeriod = () => {
-      const start = startTime.value || "--:--";
-      const end = endTime.value || "--:--";
-      previewPeriod.textContent = `${start} to ${end}`;
-    };
+    return schedules;
+}
 
-    startTime.addEventListener("input", updatePeriod);
-    endTime.addEventListener("input", updatePeriod); 
+// Cek jadwal yang sedang aktif
+function getCurrentSchedule() {
+    const now = new Date();
+    const schedules = getAllSchedules();
+
+    for (let sch of schedules) {
+        const [sh, sm] = sch.start.split(":").map(Number);
+        const [eh, em] = sch.end.split(":").map(Number);
+
+        const startTime = new Date();
+        startTime.setHours(sh, sm, 0, 0);
+
+        const endTime = new Date();
+        endTime.setHours(eh, em, 0, 0);
+
+        if (now >= startTime && now <= endTime) {
+            return sch; // jadwal sedang berjalan
+        }
+    }
+
+    return null;
+}
+
+// Cari jadwal berikutnya
+function getUpcomingSchedule() {
+    const now = new Date();
+    const schedules = getAllSchedules();
+
+    let closest = null;
+
+    schedules.forEach(sch => {
+        const [sh, sm] = sch.start.split(":").map(Number);
+        const t = new Date();
+        t.setHours(sh, sm, 0, 0);
+
+        if (t > now) {
+            if (!closest || t < closest.time) {
+                closest = { ...sch, time: t };
+            }
+        }
+    });
+
+    return closest;
+}
+
+// Update UI Current Time Card
+function updateCurrentTimeCard() {
+    const active = getCurrentSchedule();
+    const upcoming = getUpcomingSchedule();
+
+    if (active) {
+        // Tampilkan yang sedang aktif
+        currentSubjectEl.textContent = active.subject;
+        currentScheduleEl.textContent = `${active.start} - ${active.end}`;
+    } else if (upcoming) {
+        // Kalau belum mulai apa pun, tampilkan jadwal berikutnya
+        currentSubjectEl.textContent = upcoming.subject + " (Upcoming)";
+        currentScheduleEl.textContent = `${upcoming.start} - ${upcoming.end}`;
+    } else {
+        // Tidak ada jadwal lagi
+        currentSubjectEl.textContent = "No Schedule";
+        currentScheduleEl.textContent = "--:--";
+    }
+}
+
+// Update setiap detik
+setInterval(updateCurrentTimeCard, 1000);
+updateCurrentTimeCard();
+
+// Update card ketika user menambah jadwal
+addButton.addEventListener("click", () => {
+    setTimeout(updateCurrentTimeCard, 200);
+});
 
 </script>
   </body>
