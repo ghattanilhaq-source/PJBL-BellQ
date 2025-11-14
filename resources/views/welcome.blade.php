@@ -406,7 +406,7 @@
       </div>
     </section>
 
-    <form action="/" method="#" >
+     <form action="/api/bells" method="post" enctype="multipart/form-data">
       @csrf
     <section class="add-ring">
       <div class="add-text gradient-color">
@@ -428,7 +428,9 @@
               type="text"
               placeholder="example"
               class="input-subject"
-              id="subjectInput"/>
+              id="subjectInput"
+              name="subject"
+              required/>
               
           </div>
           <div class="sound-form">
@@ -440,6 +442,7 @@
     id="soundInput"
     accept=".mp3,audio/mpeg"
     style="display: none;"
+    name="sound"
   />
 </div>
 
@@ -450,12 +453,16 @@
                 type="time"
                 class="timeInput"
                 id="startTime"
+                name="start_time"
+                required
               />
               <span>to</span>
               <input
                 type="time"
                 class="timeInput"
                 id="endTime"
+                name="end_time"
+                required
               />
             </div>
           </div>
@@ -503,6 +510,7 @@
             transition: 0.3s;
             "
           class="btn gradient-color"
+          type="submit"
           >
           Add to schedule
         </button>

@@ -18,13 +18,14 @@ class BellQController extends Controller
     {
         $request->validate([
             'subject' => 'required|string|max:255',
-            'sound'   => 'required|string|max:255',
+            'sound'   => 'nullable|string|max:255',
             'start_time'  => 'required|date_format:H:i',
             'end_time'    => 'required|date_format:H:i',
         ]);
+        // dd ($request->validate());
 
         $bellQ = BellQ::create($request->all());
-        return response()->json($bellQ, 201);
+        return redirect ("/");
     }
 
     // Ambil satu data berdasarkan id
