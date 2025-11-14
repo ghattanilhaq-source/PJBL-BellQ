@@ -441,7 +441,7 @@
       </div>
     </section>
 
-   <form action="/" method="#" >
+   <form action="/api/bells" method="POST" >
       @csrf
     <section class="add-ring">
       <div class="add-text gradient-color">
@@ -490,15 +490,14 @@
                 name="start_time"
                 required
               />
-              <div style="display: flex; align-items: center; gap: 10px;">
-                <input
-                type="number"
-                min="1"
-                max="60"
-                value="5"
-                class="timeInput durationInput"
-                id="durationInput" />
-                <span class="inputLabel">S</span>
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <input
+                type="time"
+                class="timeInput"
+                id="EndTime"
+                name="end_time"
+                required
+              />
               </div>
             </div>
           </div>
