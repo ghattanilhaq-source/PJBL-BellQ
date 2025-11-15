@@ -362,10 +362,10 @@
     </section>
 
     <!-- Add Rings Form -->
+   <form action="/api/bells" method="POST" >
+      @csrf
     <section id="addRingSection">
       <h4><i class="fa-solid fa-bullhorn"></i> Add rings!</h4>
-      <form id="addRingForm" novalidate method="post" action="/api/bells">
-        @csrf
         <div class="mb-3">
           <label for="subjectInput" class="form-label">Subject</label>
           <input
@@ -374,14 +374,14 @@
             id="subjectInput"
             placeholder="Example: Bahasa Indonesia"
             autocomplete="off"
-            required
             name="subject"
+            required
           />
         </div>
 
         <div class="mb-3">
           <label for="soundInput" class="form-label">Sound (MP3)</label><br />
-          <label for="soundInput" class="custom-file-upload"
+          <label for="soundInput" class="custom-file-upload" name="sound"
             >Choose MP3</label
           >
           <span id="file-name">No file chosen</span>
@@ -423,7 +423,7 @@
           <div id="previewPeriod">Period</div>
         </div>
 
-        <button type="submit" id="addScheduleBtn">Add to schedule</button>
+        <button type="submit" id="addScheduleBtn" class="btn">Add to schedule</button>
       </form>
     </section>
 
