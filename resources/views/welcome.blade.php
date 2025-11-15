@@ -18,6 +18,8 @@
       rel="stylesheet"
     />
 
+    <!-- AOS/Animate -->
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
     <style>
       /* Reset & Font */
       * {
@@ -86,7 +88,7 @@
         transition: background 0.3s ease, scale 0.3s ease-in-out;
       }
       .activity-card:hover {
-        background: #d8cfff;
+        background: #f3ecff ;
         scale: 1.05;
       }
 
@@ -326,30 +328,30 @@
   </head>
   <body>
     <header class="header">
-      <div class="logo">
+      <div class="logo" data-aos="fadein" data-aos-duration="1000">
         <i class="fa-solid fa-bell"></i> BelQ
       </div>
-      <p class="subtitle">admin display dashboard</p>
+      <p class="subtitle" data-aos="fadein" data-aos-duration="1000">admin display dashboard</p>
     </header>
 
     <!-- Today's Activities -->
     <section>
-      <div class="section-title">
+      <div class="section-title" data-aos="fadein" data-aos-duration="1000">
         <i class="fa-solid fa-table"></i> Today's activities
       </div>
-      <div id="activitiesContainer">
+      <div id="activitiesContainer" data-aos="fadeIn " data-aos-easing="ease" data-aos-duration="1000">
         <!-- Default activities will be added by script -->
       </div>
     </section>
 
     <!-- Time Section -->
-    <section id="timeSection" class="mainTime-card">
+    <section id="timeSection" class="mainTime-card" data-aos="fadeIn" data-aos-duration="1000">
       <div id="mainTime">--:--:--</div>
       <div id="mainDate">Day, 00 Month Years</div>
     </section>
 
     <!-- Current and Next Bell Info -->
-    <section id="currentNextContainer">
+    <section id="currentNextContainer" data-aos="fadeIn" data-aos-duration="1000">
       <div class="info-card" id="currentTimeCard">
         <h5><i class="fa-solid fa-alarm-clock"></i> Current time!</h5>
         <div class="current-subject" id="currentSubject">No Schedule</div>
@@ -365,6 +367,7 @@
    <form action="/api/bells" method="POST" >
       @csrf
     <section id="addRingSection">
+    <section id="addRingSection" data-aos="fade-up" data-aos-duration="1000">
       <h4><i class="fa-solid fa-bullhorn"></i> Add rings!</h4>
         <div class="mb-3">
           <label for="subjectInput" class="form-label">Subject</label>
@@ -427,7 +430,7 @@
       </form>
     </section>
 
-    <footer>created by: <b>XI PPLG</b> kelompok 1</footer>
+    <footer >created by: <b>XI PPLG</b> kelompok 1</footer>
 
     <!-- Bootstrap Bundle JS (Popper included) -->
     <script
@@ -435,6 +438,10 @@
       crossorigin="anonymous"
     ></script>
 
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    <script>
+      AOS.init();
+    </script>
     <script>
       // Utilities
       function formatTime(date) {
