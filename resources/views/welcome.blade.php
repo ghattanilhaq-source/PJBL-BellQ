@@ -73,7 +73,7 @@
         background: #e0d7ff;
         border-radius: 15px;
         padding: 20px;
-        max-width: 520px;
+        max-width: 720px;
         margin: 0 auto 40px auto;
         box-shadow: 0 3px 8px rgba(116, 85, 255, 0.3);
       }
@@ -146,11 +146,11 @@
 
 
       #timeSection {
-        max-width: 520px;
+        max-width: 720px;
         margin: 0 auto 60px auto;
         text-align: center;
         background: white;
-      width: 520px;
+      width: 720px;
       padding: 35px 15px;
       border-radius: 25px;
       box-shadow: 0 0 25px rgba(154, 109, 255, 0.2);
@@ -176,7 +176,7 @@
       /* Current and Next Bell Cards container */
       #currentNextContainer {
         display: flex;
-        max-width: 520px;
+        max-width: 720px;
         margin: 25px auto 50px auto;
         gap: 20px;
       }
@@ -224,7 +224,7 @@
 
       /* Add Ring Form */
       #addRingSection {
-        max-width: 520px;
+        max-width: 720px;
         margin: 0 auto;
         background: white;
         padding: 20px 25px 30px 25px;
@@ -393,6 +393,7 @@
             id="soundInput"
             accept=".mp3,audio/mpeg"
             style="display: none"
+            name="sound"
           />
         </div>
 

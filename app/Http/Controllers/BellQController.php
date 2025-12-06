@@ -25,7 +25,7 @@ class BellQController extends Controller
         // dd ($request->validate());
 
         $bellQ = BellQ::create($request->all());
-        return redirect ("/");
+        return redirect("/");
     }
 
     // Ambil satu data berdasarkan id
