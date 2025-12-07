@@ -15,32 +15,19 @@ class BellQController extends Controller
 
     // Tambah data bell baru
     public function store(Request $request)
-{
-    $request->validate([
-        'subject' => 'required|string|max:255',
-        'start_time' => 'required',
-        'end_time' => 'required',
-        'sound' => 'nullable|mimes:mp3'
-    ]);
+    {
+        $request->validate([
+            'subject' => 'required|string|max:255',
+            'sound'   => 'nullable|string|max:255',
+            'start_time'  => 'required|date_format:H:i',
+            'end_time'    => 'required|date_format:H:i',
+        ]);
+        // dd ($request->validate());
 
-    $filename = null;
+        $bellQ = BellQ::create($request->all());
+        return response()->json($bellQ);
 
-    if ($request->hasFile('sound')) {
-        $file = $request->file('sound');
-        $filename = time() . "_" . $file->getClientOriginalName();
-        $file->move(public_path('sounds'), $filename);
     }
-
-    BellQ::create([
-        'subject' => $request->subject,
-        'start_time' => $request->start_time,
-        'end_time' => $request->end_time,
-        'sound' => $filename
-    ]);
-
-    return response()->json(['success' => true]);
-}
-
 
     // Ambil satu data berdasarkan id
     public function show($id)

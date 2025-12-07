@@ -547,38 +547,6 @@ const subjectInput = document.getElementById("subjectInput");
 const startTime = document.getElementById("startTime");
 const endTime = document.getElementById("endTime");
 const fileName = document.getElementById("file-name");
-const soundInput = document.getElementById("soundInput");
-const bellPlayer = document.getElementById("bellPlayer");
-
-// preview file mp3 saat dipilih
-soundInput.addEventListener("change", function() {
-  const file = this.files[0];
-
-  if (!file) {
-    fileName.innerText = "No file chosen";
-    return;
-  }
-
-  if (!file.name.endsWith(".mp3")) {
-    alert("File harus MP3!");
-    this.value = "";
-    return;
-  }
-
-  // tampilkan nama file
-  fileName.innerText = file.name;
-
-  // tampilkan juga di preview card
-  previewName.innerText = subjectInput.value || "Ring name";
-  previewPeriod.innerText = startTime.value && endTime.value
-    ? `${startTime.value} - ${endTime.value}`
-    : "Period";
-
-  // buat preview suara
-  const audioURL = URL.createObjectURL(file);
-  bellPlayer.src = audioURL;
-});
-
 const previewName = document.getElementById("previewRingName");
 const previewPeriod = document.getElementById("previewPeriod");
 const csrf = document.querySelector('meta[name="csrf-token"]').content;
@@ -634,26 +602,27 @@ loadBells();
 form.addEventListener("submit", async function(e){
   e.preventDefault();
 
-  const formData = new FormData();
-  formData.append("subject", subjectInput.value);
-  formData.append("start_time", startTime.value);
-  formData.append("end_time", endTime.value);
-  formData.append("_token", csrf);
-
-  if (soundInput.files[0]) {
-    formData.append("sound", soundInput.files[0]); // kirim file mp3 asli
-  }
+  const data = {
+    subject: subjectInput.value,
+    sound: fileName.innerText,
+    start_time: startTime.value,
+    end_time: endTime.value,
+    _token: csrf
+  };
 
   await fetch("/bells", {
     method: "POST",
-    body: formData
+    headers: {
+      "Content-Type": "application/json",
+      "X-CSRF-TOKEN": csrf
+    },
+    body: JSON.stringify(data)
   });
 
   form.reset();
   previewName.innerText = "Ring name";
   previewPeriod.innerText = "Period";
   fileName.innerText = "No file chosen";
-  bellPlayer.src = "";
 
   loadBells();
 });
