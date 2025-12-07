@@ -324,6 +324,93 @@
         color: #6b4cff;
         font-weight: 600;
       }
+
+      /* =========================
+   RESPONSIVE DESIGN
+========================= */
+
+/* Tablet */
+@media (max-width: 768px) {
+  #timeSection {
+    width: 100%;
+    padding: 25px 15px;
+  }
+
+  #currentNextContainer {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .info-card {
+    text-align: center;
+  }
+
+  #mainTime {
+    font-size: 38px;
+  }
+
+  .next-bell-countdown {
+    font-size: 28px;
+  }
+
+  .activity-subject {
+    font-size: 16px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+  body {
+    padding: 15px 10px;
+  }
+
+  .logo {
+    font-size: 28px;
+  }
+
+  .section-title {
+    font-size: 16px;
+  }
+
+  #timeSection {
+    padding: 20px 10px;
+    border-radius: 18px;
+  }
+
+  #mainTime {
+    font-size: 32px;
+  }
+
+  #mainDate {
+    font-size: 13px;
+  }
+
+  #activitiesContainer {
+    padding: 15px 12px;
+  }
+
+  .activity-card {
+    padding: 10px 14px;
+  }
+
+  .activity-subject {
+    font-size: 15px;
+  }
+
+  .next-bell-countdown {
+    font-size: 24px;
+  }
+
+  #addRingSection {
+    padding: 18px 15px 25px 15px;
+  }
+
+  #addScheduleBtn {
+    width: 100%;
+    padding: 12px;
+  }
+}
+
     </style>
   </head>
   <body>
@@ -429,7 +516,15 @@
 
         <button type="submit" id="addScheduleBtn" class="btn">Add to schedule</button>
       </form>
+      <div style="text-align:center; margin-bottom:15px; margin-top:15px">
+    <button onclick="enableSound()" class="btn btn-primary">
+      🔔 Enable Bell Sound
+    </button>
+  </div>
+  
+  <audio id="bellPlayer"></audio>
     </section>
+
 
     <footer >created by: <b>XI PPLG</b> kelompok 1</footer>
 
@@ -444,332 +539,195 @@
       AOS.init();
     </script>
     <script>
-      // Utilities
-      function formatTime(date) {
-        return date.toLocaleTimeString("en-US", {
-          hour12: false,
-          hour: "2-digit",
-          minute: "2-digit",
-        });
+/* =========================
+   AKTIFKAN AUDIO (WAJIB 1x KLIK)
+========================= */
+let audioEnabled = localStorage.getItem("audioEnabled") === "true";
+const bellPlayer = document.getElementById("bellPlayer");
+
+function enableSound() {
+  audioEnabled = true;
+  localStorage.setItem("audioEnabled", "true");
+  alert("✅ Bell sound aktif!");
+}
+
+
+/* =========================
+   PAKSA INPUT TIME BISA KLIK
+========================= */
+document.querySelectorAll('input[type="time"]').forEach(input => {
+  input.addEventListener("click", function () {
+    this.showPicker();
+  });
+});
+
+
+/* =========================
+   JAM REALTIME
+========================= */
+function updateClock() {
+  const now = new Date();
+  document.getElementById("mainTime").innerText =
+    now.toLocaleTimeString("id-ID", { hour12: false });
+
+  document.getElementById("mainDate").innerText =
+    now.toLocaleDateString("id-ID", {
+      weekday: "long",
+      day: "2-digit",
+      month: "long",
+      year: "numeric"
+    });
+}
+setInterval(updateClock, 1000);
+updateClock();
+
+
+/* =========================
+   PREVIEW LIVE
+========================= */
+const subjectInput = document.getElementById("subjectInput");
+const startTime = document.getElementById("startTime");
+const endTime = document.getElementById("endTime");
+const soundInput = document.getElementById("soundInput");
+const previewName = document.getElementById("previewRingName");
+const previewPeriod = document.getElementById("previewPeriod");
+const fileName = document.getElementById("file-name");
+
+subjectInput.addEventListener("input", () => {
+  previewName.innerText = subjectInput.value || "Ring name";
+});
+
+startTime.addEventListener("input", updatePreview);
+endTime.addEventListener("input", updatePreview);
+
+function updatePreview() {
+  previewPeriod.innerText =
+    startTime.value && endTime.value
+      ? `${startTime.value} - ${endTime.value}`
+      : "Period";
+}
+
+soundInput.addEventListener("change", () => {
+  fileName.innerText = soundInput.files[0]?.name || "No file chosen";
+});
+
+
+/* =========================
+   SIMPAN KE LOCAL STORAGE
+========================= */
+const form = document.querySelector("form");
+const activitiesContainer = document.getElementById("activitiesContainer");
+
+form.addEventListener("submit", function (e) {
+  e.preventDefault();
+
+  const newRing = {
+    subject: subjectInput.value,
+    start: startTime.value,
+    end: endTime.value,
+    sound: fileName.innerText
+  };
+
+  let data = JSON.parse(localStorage.getItem("rings")) || [];
+  data.push(newRing);
+  localStorage.setItem("rings", JSON.stringify(data));
+
+  form.reset();
+  previewName.innerText = "Ring name";
+  previewPeriod.innerText = "Period";
+  fileName.innerText = "No file chosen";
+
+  renderActivities();
+});
+
+
+/* =========================
+   TAMPILKAN TODAY ACTIVITIES
+========================= */
+function renderActivities() {
+  activitiesContainer.innerHTML = "";
+  const data = JSON.parse(localStorage.getItem("rings")) || [];
+
+  data.forEach(ring => {
+    const card = document.createElement("div");
+    card.className = "activity-card";
+    card.innerHTML = `
+      <div class="activity-header">
+        <span class="badge badge-upcoming">Upcoming</span>
+      </div>
+      <div class="activity-subject">${ring.subject}</div>
+      <div class="activity-time">${ring.start} - ${ring.end}</div>
+    `;
+    activitiesContainer.appendChild(card);
+  });
+}
+
+renderActivities();
+
+
+/* =========================
+   CURRENT TIME + NEXT BELL + AUTO SOUND
+========================= */
+let bellPlayed = false;
+
+function updateCurrentAndNext() {
+  const now = new Date();
+  const nowSeconds =
+    now.getHours() * 3600 + now.getMinutes() * 60 + now.getSeconds();
+
+  const data = JSON.parse(localStorage.getItem("rings")) || [];
+
+  let current = null;
+  let next = null;
+
+  data.forEach(ring => {
+    const [sh, sm] = ring.start.split(":");
+    const [eh, em] = ring.end.split(":");
+
+    const startSec = sh * 3600 + sm * 60;
+    const endSec = eh * 3600 + em * 60;
+
+    if (nowSeconds >= startSec && nowSeconds <= endSec) {
+      current = ring;
+
+      // 🔔 BUNYI OTOMATIS SAAT JAM TEPAT
+      if (audioEnabled && nowSeconds === startSec && !bellPlayed) {
+        bellPlayer.src = URL.createObjectURL(soundInput.files[0]);
+        bellPlayer.play();
+        bellPlayed = true;
       }
+    }
 
-      // Show time picker on click for time inputs
-      const timeInputs = document.querySelectorAll('input[type="time"]');
-      timeInputs.forEach((input) => {
-        input.addEventListener("click", () => {
-          input.showPicker();
-        });
-      });
+    if (nowSeconds < startSec && !next) {
+      next = ring;
+      bellPlayed = false;
+    }
+  });
 
-      // Clock update
-      const mainTimeEl = document.getElementById("mainTime");
-      const mainDateEl = document.getElementById("mainDate");
-      function updateClock() {
-        const now = new Date();
-        mainTimeEl.textContent = now.toLocaleTimeString("en-US", {
-          hour12: true,
-          hour: "2-digit",
-          minute: "2-digit",
-          second: "2-digit",
-        });
-        mainDateEl.textContent = now.toLocaleDateString("en-US", {
-          weekday: "long",
-          year: "numeric",
-          month: "long",
-          day: "numeric",
-        });
-      }
-      setInterval(updateClock, 1000);
-      updateClock();
+  document.getElementById("currentSubject").innerText =
+    current ? current.subject : "No Schedule";
 
-      // Sound file input
-      const soundInput = document.getElementById("soundInput");
-      const fileNameSpan = document.getElementById("file-name");
-      soundInput.addEventListener("change", () => {
-        const file = soundInput.files[0];
-        if (file) {
-          if (file.type !== "audio/mpeg") {
-            alert("Only MP3 files are allowed!");
-            soundInput.value = "";
-            fileNameSpan.textContent = "No file chosen";
-            return;
-          }
-          fileNameSpan.textContent = file.name;
-        } else {
-          fileNameSpan.textContent = "No file chosen";
-        }
-      });
+  document.getElementById("currentSchedule").innerText =
+    current ? `${current.start} - ${current.end}` : "--:--";
 
-      // Elements for form inputs and preview
-      const subjectInput = document.getElementById("subjectInput");
-      const startTimeInput = document.getElementById("startTime");
-      const endTimeInput = document.getElementById("endTime");
-      const previewRingName = document.getElementById("previewRingName");
-      const previewPeriod = document.getElementById("previewPeriod");
+  if (next) {
+    const [nh, nm] = next.start.split(":");
+    const nextSeconds = nh * 3600 + nm * 60;
 
-      // Preview update function
-      function updatePreview() {
-        const subject = subjectInput.value.trim() || "Ring name";
-        const start = startTimeInput.value.trim();
-        const end = endTimeInput.value.trim();
+    const diff = nextSeconds - nowSeconds;
+    const minutes = Math.floor(diff / 60);
+    const seconds = diff % 60;
 
-        previewRingName.textContent = subject;
+    document.getElementById("nextBellCountdown").innerText =
+      `${minutes}m ${seconds}s`;
+  } else {
+    document.getElementById("nextBellCountdown").innerText = "--:--";
+  }
+}
 
-        if (start && end) {
-          previewPeriod.textContent = `${start} - ${end}`;
-        } else {
-          previewPeriod.textContent = "Period";
-        }
-      }
+setInterval(updateCurrentAndNext, 1000);
+updateCurrentAndNext();
+</script>
 
-      subjectInput.addEventListener("input", updatePreview);
-      startTimeInput.addEventListener("input", updatePreview);
-      endTimeInput.addEventListener("input", updatePreview);
-
-      document.addEventListener("DOMContentLoaded", updatePreview);
-
-      // Container for activities and count for ring number
-      const activitiesContainer = document.getElementById("activitiesContainer");
-      let ringCount = 1;
-
-      // Helper to create option badge element with class & text content
-      function createBadge(status) {
-        const span = document.createElement("span");
-        span.classList.add("badge");
-        if (status === "completed") {
-          span.classList.add("badge-completed");
-          span.textContent = "Completed";
-        } else if (status === "active") {
-          span.classList.add("badge-active");
-          span.textContent = "Active";
-        } else {
-          span.classList.add("badge-upcoming");
-          span.textContent = "Upcoming";
-        }
-        return span;
-      }
-
-      // Function to create and append activity card
-      function addActivityCard(subject, period, status) {
-        const card = document.createElement("div");
-        card.classList.add("activity-card");
-
-        // Header with ring number and badge
-        const header = document.createElement("div");
-        header.className = "activity-header";
-        header.innerHTML = `<div>${ringCount}th Ring</div>`;
-        header.appendChild(createBadge(status));
-        card.appendChild(header);
-
-        // Subject + time
-        const subjectEl = document.createElement("div");
-        subjectEl.className = "activity-subject";
-        subjectEl.textContent = subject;
-        card.appendChild(subjectEl);
-
-        const timeEl = document.createElement("div");
-        timeEl.className = "activity-time";
-        timeEl.textContent = period;
-        card.appendChild(timeEl);
-
-        activitiesContainer.appendChild(card);
-        ringCount++;
-      }
-
-      // Preload default activities (as example)
-      const defaultActivities = [
-        {
-          subject: "Bahasa Indonesia",
-          period: "07:00 - 08:00",
-          status: "upcoming",
-          date: "Friday, November 14, 2025",
-        },
-        
-      ];
-
-      function loadDefaultActivities() {
-        defaultActivities.forEach((act) => {
-          addActivityCard(act.subject, act.period, act.status);
-        });
-      }
-
-      // Load defaults on DOM ready
-      document.addEventListener("DOMContentLoaded", loadDefaultActivities);
-
-      // Form submit (Add to schedule)
-      const addRingForm = document.getElementById("addRingForm");
-      addRingForm.addEventListener("submit", (e) => {
-        e.preventDefault();
-
-        const subject = subjectInput.value.trim();
-        const start = startTimeInput.value.trim();
-        const end = endTimeInput.value.trim();
-        if (!subject || !start || !end) {
-          alert("Please fill all fields before adding schedule!");
-          return;
-        }
-
-        // Validate start < end
-        if (start >= end) {
-          alert("End time must be after start time!");
-          return;
-        }
-
-        // Tambahkan activity baru dengan status upcoming
-        addActivityCard(subject, `${start}-${end}`, "upcoming");
-
-        // Reset form and preview
-        addRingForm.reset();
-        updatePreview();
-        fileNameSpan.textContent = "No file chosen";
-
-        // Update countdown and current time after slight delay
-        setTimeout(() => {
-          updateCurrentTimeCard();
-          startNextBellCountdown();
-        }, 200);
-      });
-
-      // ====== CURRENT TIME & UPCOMING SCHEDULE LOGIC ======
-      const currentSubjectEl = document.getElementById("currentSubject");
-      const currentScheduleEl = document.getElementById("currentSchedule");
-      const nextBellCountdownEl = document.getElementById("nextBellCountdown");
-
-      // Parse all time strings on activities and return schedules list
-      function getSchedules() {
-        const cards = document.querySelectorAll(".activity-card");
-        let schedules = [];
-        cards.forEach((card) => {
-          const subject = card.querySelector(".activity-subject").textContent;
-          const periodText = card.querySelector(".activity-time").textContent;
-          const [start, end] = periodText.split("-");
-          schedules.push({
-            subject,
-            start,
-            end,
-          });
-        });
-        return schedules;
-      }
-
-      // Get current active schedule if any
-      function getCurrentSchedule() {
-        const now = new Date();
-
-        const schedules = getSchedules();
-
-        for (const sch of schedules) {
-          const [sh, sm] = sch.start.split(":").map(Number);
-          const [eh, em] = sch.end.split(":").map(Number);
-
-          const startTime = new Date();
-          startTime.setHours(sh, sm, 0, 0);
-
-          const endTime = new Date();
-          endTime.setHours(eh, em, 0, 0);
-
-          if (now >= startTime && now < endTime) {
-            return sch;
-          }
-        }
-        return null;
-      }
-
-      // Get next upcoming schedule
-      function getUpcomingSchedule() {
-        const now = new Date();
-        const schedules = getSchedules();
-
-        let closest = null;
-
-        for (const sch of schedules) {
-          const [sh, sm] = sch.start.split(":").map(Number);
-          const scheduleTime = new Date();
-          scheduleTime.setHours(sh, sm, 0, 0);
-
-          if (scheduleTime > now) {
-            if (!closest || scheduleTime < closest.time) {
-              closest = { ...sch, time: scheduleTime };
-            }
-          }
-        }
-        return closest;
-      }
-
-      // Update current time card display
-      function updateCurrentTimeCard() {
-        const active = getCurrentSchedule();
-        const upcoming = getUpcomingSchedule();
-
-        if (active) {
-          currentSubjectEl.textContent = active.subject;
-          currentScheduleEl.textContent = `${active.start} - ${active.end}`;
-        } else if (upcoming) {
-          currentSubjectEl.textContent = upcoming.subject + " (Upcoming)";
-          currentScheduleEl.textContent = `${upcoming.start} - ${upcoming.end}`;
-        } else {
-          currentSubjectEl.textContent = "No Schedule";
-          currentScheduleEl.textContent = "--:--";
-        }
-      }
-
-      // ====== NEXT BELL COUNTDOWN LOGIC ======
-      let countdownInterval = null;
-
-      function startNextBellCountdown() {
-        if (countdownInterval) clearInterval(countdownInterval);
-
-        const now = new Date();
-        const schedules = getSchedules();
-
-        // Find closest upcoming start time
-        let nextBellTime = null;
-        schedules.forEach((sch) => {
-          const [sh, sm] = sch.start.split(":").map(Number);
-          const scheduleTime = new Date();
-          scheduleTime.setHours(sh, sm, 0, 0);
-          if (scheduleTime > now) {
-            if (!nextBellTime || scheduleTime < nextBellTime) {
-              nextBellTime = scheduleTime;
-            }
-          }
-        });
-
-        if (!nextBellTime) {
-          nextBellCountdownEl.textContent = "--:--";
-          return;
-        }
-
-        countdownInterval = setInterval(() => {
-          const now = new Date();
-          const diff = nextBellTime - now;
-
-          if (diff <= 0) {
-            clearInterval(countdownInterval);
-            nextBellCountdownEl.textContent = "00:00";
-            startNextBellCountdown(); // restart cari jadwal berikutnya
-            updateCurrentTimeCard();
-            return;
-          }
-
-          const minutes = Math.floor(diff / 1000 / 60);
-          const seconds = Math.floor((diff / 1000) % 60);
-
-          nextBellCountdownEl.textContent =
-            String(minutes).padStart(2, "0") +
-            ":" +
-            String(seconds).padStart(2, "0");
-        }, 1000);
-      }
-
-      // Initialize Current time & Next bell countdown on page load
-      document.addEventListener("DOMContentLoaded", () => {
-        updateCurrentTimeCard();
-        startNextBellCountdown();
-      });
-
-      // Update current time card every second
-      setInterval(updateCurrentTimeCard, 1000);
-    </script>
   </body>
 </html>
