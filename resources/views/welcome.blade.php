@@ -20,6 +20,8 @@
 
     <!-- AOS/Animate -->
     <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
     <style>
       /* Reset & Font */
       * {
@@ -451,8 +453,8 @@
     </section>
 
     <!-- Add Rings Form -->
-   <form action="/api/bells" method="POST" >
-      @csrf
+     <form id="bellForm">
+  @csrf
     <section id="addRingSection">
     <section id="addRingSection" data-aos="fade-up" data-aos-duration="1000">
       <h4><i class="fa-solid fa-bullhorn"></i> Add rings!</h4>
@@ -539,64 +541,55 @@
       AOS.init();
     </script>
     <script>
-/* =========================
-   AKTIFKAN AUDIO (WAJIB 1x KLIK)
-========================= */
-let audioEnabled = localStorage.getItem("audioEnabled") === "true";
-const bellPlayer = document.getElementById("bellPlayer");
-
-function enableSound() {
-  audioEnabled = true;
-  localStorage.setItem("audioEnabled", "true");
-  alert("✅ Bell sound aktif!");
-}
-
-
-/* =========================
-   PAKSA INPUT TIME BISA KLIK
-========================= */
-document.querySelectorAll('input[type="time"]').forEach(input => {
-  input.addEventListener("click", function () {
-    this.showPicker();
-  });
-});
-
-
-/* =========================
-   JAM REALTIME
-========================= */
-function updateClock() {
-  const now = new Date();
-  document.getElementById("mainTime").innerText =
-    now.toLocaleTimeString("id-ID", { hour12: false });
-
-  document.getElementById("mainDate").innerText =
-    now.toLocaleDateString("id-ID", {
-      weekday: "long",
-      day: "2-digit",
-      month: "long",
-      year: "numeric"
-    });
-}
-setInterval(updateClock, 1000);
-updateClock();
-
-
-/* =========================
-   PREVIEW LIVE
-========================= */
+const activitiesContainer = document.getElementById("activitiesContainer");
+const form = document.getElementById("bellForm");
 const subjectInput = document.getElementById("subjectInput");
 const startTime = document.getElementById("startTime");
 const endTime = document.getElementById("endTime");
+const fileName = document.getElementById("file-name");
 const soundInput = document.getElementById("soundInput");
+const bellPlayer = document.getElementById("bellPlayer");
+
+// preview file mp3 saat dipilih
+soundInput.addEventListener("change", function() {
+  const file = this.files[0];
+
+  if (!file) {
+    fileName.innerText = "No file chosen";
+    return;
+  }
+
+  if (!file.name.endsWith(".mp3")) {
+    alert("File harus MP3!");
+    this.value = "";
+    return;
+  }
+
+  // tampilkan nama file
+  fileName.innerText = file.name;
+
+  // tampilkan juga di preview card
+  previewName.innerText = subjectInput.value || "Ring name";
+  previewPeriod.innerText = startTime.value && endTime.value
+    ? `${startTime.value} - ${endTime.value}`
+    : "Period";
+
+  // buat preview suara
+  const audioURL = URL.createObjectURL(file);
+  bellPlayer.src = audioURL;
+});
+
 const previewName = document.getElementById("previewRingName");
 const previewPeriod = document.getElementById("previewPeriod");
-const fileName = document.getElementById("file-name");
+const csrf = document.querySelector('meta[name="csrf-token"]').content;
 
+
+/* =========================
+   PREVIEW INPUT LIVE
+========================= */
 subjectInput.addEventListener("input", () => {
   previewName.innerText = subjectInput.value || "Ring name";
 });
-
 startTime.addEventListener("input", updatePreview);
 endTime.addEventListener("input", updatePreview);
 
@@ -607,46 +600,16 @@ function updatePreview() {
       : "Period";
 }
 
-soundInput.addEventListener("change", () => {
-  fileName.innerText = soundInput.files[0]?.name || "No file chosen";
-});
-
 
 /* =========================
-   SIMPAN KE LOCAL STORAGE
+   LOAD DATA DARI DATABASE
 ========================= */
-const form = document.querySelector("form");
-const activitiesContainer = document.getElementById("activitiesContainer");
+async function loadBells() {
+  const res = await fetch("/bells");
+  const data = await res.json();
 
-form.addEventListener("submit", function (e) {
-  e.preventDefault();
-
-  const newRing = {
-    subject: subjectInput.value,
-    start: startTime.value,
-    end: endTime.value,
-    sound: fileName.innerText
-  };
-
-  let data = JSON.parse(localStorage.getItem("rings")) || [];
-  data.push(newRing);
-  localStorage.setItem("rings", JSON.stringify(data));
-
-  form.reset();
-  previewName.innerText = "Ring name";
-  previewPeriod.innerText = "Period";
-  fileName.innerText = "No file chosen";
-
-  renderActivities();
-});
-
-
-/* =========================
-   TAMPILKAN TODAY ACTIVITIES
-========================= */
-function renderActivities() {
   activitiesContainer.innerHTML = "";
-  const data = JSON.parse(localStorage.getItem("rings")) || [];
+  window.allRings = data;
 
   data.forEach(ring => {
     const card = document.createElement("div");
@@ -654,80 +617,164 @@ function renderActivities() {
     card.innerHTML = `
       <div class="activity-header">
         <span class="badge badge-upcoming">Upcoming</span>
+        <button onclick="deleteBell(${ring.id})" class="btn btn-sm btn-danger">X</button>
       </div>
       <div class="activity-subject">${ring.subject}</div>
-      <div class="activity-time">${ring.start} - ${ring.end}</div>
+      <div class="activity-time">${ring.start_time} - ${ring.end_time}</div>
     `;
     activitiesContainer.appendChild(card);
   });
 }
-
-renderActivities();
+loadBells();
 
 
 /* =========================
-   CURRENT TIME + NEXT BELL + AUTO SOUND
+   SIMPAN KE DATABASE (AJAX)
 ========================= */
-let bellPlayed = false;
+form.addEventListener("submit", async function(e){
+  e.preventDefault();
 
+  const formData = new FormData();
+  formData.append("subject", subjectInput.value);
+  formData.append("start_time", startTime.value);
+  formData.append("end_time", endTime.value);
+  formData.append("_token", csrf);
+
+  if (soundInput.files[0]) {
+    formData.append("sound", soundInput.files[0]); // kirim file mp3 asli
+  }
+
+  await fetch("/bells", {
+    method: "POST",
+    body: formData
+  });
+
+  form.reset();
+  previewName.innerText = "Ring name";
+  previewPeriod.innerText = "Period";
+  fileName.innerText = "No file chosen";
+  bellPlayer.src = "";
+
+  loadBells();
+});
+
+
+/* =========================
+   HAPUS JADWAL
+========================= */
+async function deleteBell(id) {
+  if (!confirm("Hapus jadwal ini?")) return;
+
+  await fetch(`/bells/${id}`, {
+    method: "DELETE",
+    headers: {
+      "X-CSRF-TOKEN": csrf
+    }
+  });
+
+  loadBells();
+}
+
+
+/* =========================
+   CURRENT & NEXT BELL
+========================= */
 function updateCurrentAndNext() {
   const now = new Date();
   const nowSeconds =
-    now.getHours() * 3600 + now.getMinutes() * 60 + now.getSeconds();
-
-  const data = JSON.parse(localStorage.getItem("rings")) || [];
+    now.getHours()*3600 + now.getMinutes()*60 + now.getSeconds();
 
   let current = null;
   let next = null;
 
-  data.forEach(ring => {
-    const [sh, sm] = ring.start.split(":");
-    const [eh, em] = ring.end.split(":");
+  (window.allRings || []).forEach(ring => {
+    const [sh, sm] = ring.start_time.split(":");
+    const [eh, em] = ring.end_time.split(":");
 
-    const startSec = sh * 3600 + sm * 60;
-    const endSec = eh * 3600 + em * 60;
+    const startSec = sh*3600 + sm*60;
+    const endSec = eh*3600 + em*60;
 
-    if (nowSeconds >= startSec && nowSeconds <= endSec) {
-      current = ring;
-
-      // 🔔 BUNYI OTOMATIS SAAT JAM TEPAT
-      if (audioEnabled && nowSeconds === startSec && !bellPlayed) {
-        bellPlayer.src = URL.createObjectURL(soundInput.files[0]);
-        bellPlayer.play();
-        bellPlayed = true;
-      }
-    }
-
-    if (nowSeconds < startSec && !next) {
-      next = ring;
-      bellPlayed = false;
-    }
+    if (nowSeconds >= startSec && nowSeconds <= endSec) current = ring;
+    if (nowSeconds < startSec && !next) next = ring;
   });
 
   document.getElementById("currentSubject").innerText =
     current ? current.subject : "No Schedule";
 
   document.getElementById("currentSchedule").innerText =
-    current ? `${current.start} - ${current.end}` : "--:--";
+    current ? `${current.start_time} - ${current.end_time}` : "--:--";
 
   if (next) {
-    const [nh, nm] = next.start.split(":");
-    const nextSeconds = nh * 3600 + nm * 60;
-
+    const [nh, nm] = next.start_time.split(":");
+    const nextSeconds = nh*3600 + nm*60;
     const diff = nextSeconds - nowSeconds;
-    const minutes = Math.floor(diff / 60);
-    const seconds = diff % 60;
 
     document.getElementById("nextBellCountdown").innerText =
-      `${minutes}m ${seconds}s`;
+      `${Math.floor(diff/60)}m ${diff%60}s`;
   } else {
     document.getElementById("nextBellCountdown").innerText = "--:--";
   }
 }
 
 setInterval(updateCurrentAndNext, 1000);
-updateCurrentAndNext();
 </script>
+<script>
+/* =========================
+   REALTIME JAM & TANGGAL
+========================= */
+function updateMainTime() {
+  const now = new Date();
+
+  const hours = String(now.getHours()).padStart(2, "0");
+  const minutes = String(now.getMinutes()).padStart(2, "0");
+  const seconds = String(now.getSeconds()).padStart(2, "0");
+
+  document.getElementById("mainTime").innerText =
+    `${hours}:${minutes}:${seconds}`;
+
+  const days = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+  const months = [
+    "January","February","March","April","May","June",
+    "July","August","September","October","November","December"
+  ];
+
+  const dayName = days[now.getDay()];
+  const day = now.getDate();
+  const monthName = months[now.getMonth()];
+  const year = now.getFullYear();
+
+  document.getElementById("mainDate").innerText =
+    `${dayName}, ${day} ${monthName} ${year}`;
+}
+
+// jalanin langsung pertama kali
+updateMainTime();
+
+// update tiap 1 detik
+setInterval(updateMainTime, 1000);
+</script>
+<script>
+/* =========================
+   FORCE OPEN TIME PICKER
+========================= */
+function forceTimePicker(inputId) {
+  const input = document.getElementById(inputId);
+
+  input.addEventListener("click", () => {
+    input.showPicker(); // buka picker langsung tanpa klik icon jam
+  });
+
+  input.addEventListener("focus", () => {
+    input.showPicker();
+  });
+}
+
+// aktifkan untuk dua input kamu
+forceTimePicker("startTime");
+forceTimePicker("endTime");
+</script>
+
+
 
   </body>
 </html>
